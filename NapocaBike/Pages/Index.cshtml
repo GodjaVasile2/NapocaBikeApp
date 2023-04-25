@@ -1,0 +1,165 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Welcome Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Napoca</title>
+    <link rel="stylesheet" href="~/css/stylewelcome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+   <style>
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-menu .dropdown-item {
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-menu .dropdown-item:hover {
+                    background-color: #D9AF32;
+                }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .login-container {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            padding-left: 30px;
+        }
+        /* Login Modal */
+        .login-btn {
+            cursor: pointer;
+        }
+
+        .login-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+   </style>
+</head>
+
+<body>
+  
+    <section>
+        <input type="checkbox" id="check">
+        <header>
+            <h2><a href="#" class="logo"> Logo </a></h2>
+
+            <div class="navigation">
+                <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
+                <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
+                <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
+                <a asp-area="" asp-page="/UpdateProfile" class="menu-item">Update</a>
+               
+              
+                <div class="menu-item dropdown">
+                    <a href="#" class="dropdown-toggle">Admin</a>
+                    <div class="dropdown-menu">
+                        <a asp-area="" asp-page="/BikeRentalLocations/Index" class="dropdown-item ">AdminRentals</a>
+                        <a asp-area="" asp-page="/BikeParkings/Index" class="dropdown-item">AdminParkings</a>
+                        <a asp-area="" asp-page="/Locations/Index" class="dropdown-item">AdminLocations</a>
+                        <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Members</a>
+                        
+                    </div>
+                </div>
+                <a id="login-btn" class="login-btn">Login</a>
+
+                
+            </div>
+           
+            <label for="check">
+                <i class="fas fa-bars menu-btn"></i>
+                <i class="fas fa-times close-btn"></i>
+            </label>
+
+
+        </header>
+
+        <div id="login-modal" class="login-modal">
+            <div class="modal-content">
+               
+                    <partial name="_LoginPartial" />
+                
+            </div>
+        </div>
+
+
+        <div class="content">
+            <div class="info">
+                <h2>Start pedaling<br><span>Be free!</span></h2>
+                <a asp-area="" asp-page="/LocationsList" class="info-btn">View locations</a>
+            </div>
+        </div>
+        <div class="media-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </section>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("login-modal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("login-btn");
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        };
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+
+</body>
+</html>
+
+

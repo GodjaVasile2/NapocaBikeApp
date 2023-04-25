@@ -1,0 +1,156 @@
+﻿@page
+@model NapocaBike.Pages.Locations.IndexModel
+
+@{
+    ViewData["Title"] = "Locations list ";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Napoca</title>
+    <link rel="stylesheet" href="~/css/locations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+</head>
+
+<body>
+
+    <section>
+        <input type="checkbox" id="check">
+        <header>
+            <h2><a href="#" class="logo"> Logo </a></h2>
+
+            <div class="navigation">
+                <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
+                <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
+                <a asp-area="" asp-page="/BikeParkings/Index" class="menu-item">AdminParkings</a>
+                <a asp-area="" asp-page="/Locations/Index" class="menu-item">AdminLocations</a>
+                <a asp-area="" asp-page="/BikeRentals/Create" class="menu-item">Rentals</a>
+
+                <a href="#" class="menu-item">AboutUs</a>
+                <partial name="_LoginPartial" />
+            </div>
+            <label for="check">
+                <i class="fas fa-bars menu-btn"></i>
+                <i class="fas fa-times close-btn"></i>
+            </label>
+
+
+        </header>
+        <div class="content-container">
+            <!-- Left column for the location list -->
+            <div class="locations-list">
+                <!-- Add this inside the locations-list div -->
+                @foreach (var item in Model.LocationD.Locations)
+                {
+                    <div class="location-item">
+                        <h3>@item.Name</h3>
+                        <p>Address: @item.Adress</p>
+                        <p>Program: @item.Program</p>
+                    </div>
+                }
+            </div>
+
+            <!-- Right column for the map -->
+            <div class="map-container">
+                <div id="map" style="height:400px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const locationItems = document.querySelector('.location-items');
+        const firstItem = locationItems.children[0];
+        const itemWidth = firstItem.offsetWidth + parseInt(getComputedStyle(firstItem).marginRight);
+
+        setInterval(() => {
+            locationItems.style.transition = 'transform 1s ease-in-out';
+            locationItems.style.transform = `translateX(-${itemWidth}px)`;
+
+            setTimeout(() => {
+                locationItems.style.transition = 'none';
+                locationItems.appendChild(firstItem);
+                locationItems.style.transform = 'translateX(0)';
+            }, 1000);
+        }, 5000);
+    </script>
+</body>
+</html>
+
+
+
+
+@section Scripts {
+    <script>
+        var map;
+        var currentLocationMarker;
+        let markers = [];
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 46.770439, lng: 23.591423 },
+                zoom: 12
+            });
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+
+        @foreach (var item in Model.LocationD.Locations)
+        {
+            <text>
+                    (function () {
+                        const position = { lat: @item.Latitude, lng: @item.Longitude };
+
+                        const marker = new google.maps.Marker({
+                            position,
+                            map,
+                            title: '@item.Name',
+                        });
+
+                        const infowindow = new google.maps.InfoWindow({
+                            content: `
+                                                            <div>
+                                                                <h3>@item.Name</h3>
+                                                                <p>Address: @item.Adress</p>
+                                                                <p>Program: @item.Program</p>
+                                                            </div>
+                                                        `,
+                        });
+
+                        marker.addListener("click", () => {
+                            infowindow.open(map, marker);
+                        });
+
+                        markers.push(marker);
+                    })();
+            </text>
+        }
+                        }
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+
+            currentLocationMarker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+                icon: {
+                    url: "/Icons/person.png",
+                    scaledSize: new google.maps.Size(32, 32) // specify the size of the icon
+                },
+                title: "Your Current Location"
+            });
+
+            map.setCenter({ lat: lat, lng: lng });
+            map.setZoom(15);
+        }
+    </script>
+    
+    <script src="~/GoogleMapsApiProxy" async defer></script>
+
+}

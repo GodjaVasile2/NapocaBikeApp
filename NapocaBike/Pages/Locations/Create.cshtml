@@ -1,0 +1,135 @@
+﻿@page
+@model NapocaBike.Pages.Locations.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Location</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Location.Name" class="control-label"></label>
+                <input asp-for="Location.Name" class="form-control" />
+                <span asp-validation-for="Location.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location.Adress" class="control-label"></label>
+                <input asp-for="Location.Adress" class="form-control" />
+                <span asp-validation-for="Location.Adress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location.Program" class="control-label"></label>
+                <input asp-for="Location.Program" class="form-control" />
+                <span asp-validation-for="Location.Program" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="Location.Latitude" class="control-label"></label>
+                <input asp-for="Location.Latitude" id="Latitude" class="form-control" />
+                <span asp-validation-for="Location.Latitude" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Location.Longitude" class="control-label"></label>
+                <input asp-for="Location.Longitude" id="Longitude" class="form-control" />
+                <span asp-validation-for="Location.Longitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="AddressSearch" class="control-label">Search Address</label>
+                <input id="AddressSearch" class="form-control" />
+                <button type="button" id="GeocodeButton" class="btn btn-secondary">Search</button>
+                <span id="geocodeError" class="text-danger" style="display:none;"></span>
+            </div>
+
+
+
+              <div class="form-group">
+                <div class="table">
+                    <table>
+                         <tr>
+                            @{
+                               int cnt = 0;
+                               foreach (var cat in Model.AssignedCategoryDataList)
+                               {
+                                   if (cnt++ % 3 == 0)
+                                   {
+                                   @:</tr><tr>
+                                   }
+                                   @:<td>
+                                       <input type="checkbox"
+                                              name="selectedCategories"
+                                              value="@cat.CategoryID"
+                                              @(Html.Raw(cat.Assigned ?
+                                    "checked=\"checked\"" : "")) />
+                                   @cat.CategoryID @: @cat.Name
+                               @:</td>
+                               }
+                         @:</tr>
+                     }
+              </table>
+          </div>
+        </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+     <div class="col-md-8">
+        <div id="map" style="height: 400px;"></div>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+       <script>
+        var map;
+        var geocoder;
+        var marker;
+        var addressInput;
+
+        function initMap() {
+            geocoder = new google.maps.Geocoder();
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 46.770439, lng: 23.591423 },
+                zoom: 10,
+            });
+            marker = new google.maps.Marker({
+                position: { lat: 46.770439, lng: 23.591423 },
+                map: map,
+                draggable: true,
+            });
+            marker.addListener("dragend", function () {
+                var lat = marker.getPosition().lat();
+                var lng = marker.getPosition().lng();
+                document.getElementById("Latitude").value = lat;
+                document.getElementById("Longitude").value = lng;
+            });
+
+            addressInput = document.getElementById("Location_Adress");
+            addressInput.addEventListener("change", geocodeAddress);
+        }
+
+        function geocodeAddress() {
+            geocoder.geocode({ "address": addressInput.value }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    map.setCenter(results[0].geometry.location);
+                    marker.setPosition(results[0].geometry.location);
+                    document.getElementById("Latitude").value = results[0].geometry.location.lat();
+                    document.getElementById("Longitude").value = results[0].geometry.location.lng();
+                } else {
+                    alert("Geocode nu a reușit pentru următorul motiv: " + status);
+                }
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzHZqkegdjz_xvNtEuYReEdgrPi1PFmbk&callback=initMap&v=weekly&libraries=places"async defer></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

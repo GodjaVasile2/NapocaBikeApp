@@ -1,0 +1,247 @@
+﻿/* Stilizare antet */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo img {
+    height: 50px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.search {
+    display: flex;
+}
+
+    .search input[type="text"] {
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+/* Stilizare ero */
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.hero-image img {
+    width: 50%;
+}
+
+.hero-text h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+/* Stilizare secțiunea de caracteristici */
+
+.features {
+    padding: 50px;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+}
+
+    .features h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .features ul {
+        display: flex;
+        list-style: none;
+    }
+
+    .features li {
+        margin-right: 50px;
+        text-align: center;
+    }
+
+    .features img {
+        height: 100px;
+        margin-bottom: 20px;
+    }
+
+    .features h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .features p {
+        font-size: 16px;
+        color: #666;
+    }
+
+/* Stilizare secțiunea de recenzii */
+
+.reviews {
+    padding: 50px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+    .reviews h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .reviews ul {
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .reviews li {
+        flex-basis: 40%;
+    }
+
+    .reviews img {
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+    }
+
+    .reviews p {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .reviews span {
+        display: block;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: right;
+    }
+
+/* Stilizare secțiunea de contact */
+
+.contact {
+    padding: 50px;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+}
+
+    .contact h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .contact p {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .contact ul {
+        list-style: none;
+    }
+
+    .contact li {
+        margin-bottom: 10px;
+    }
+
+        .contact li:last-child {
+            margin-bottom: 0;
+        }
+
+    .contact label {
+        display: block;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .contact input[type="text"],
+    .contact input[type="email"],
+    .contact textarea {
+        display: block;
+        width: 100%;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .contact textarea {
+        resize: vertical;
+    }
+
+    .contact input[type="submit"] {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #333;
+        color: #fff;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+/* Stilizare footer */
+
+footer {
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+}
+
+    footer ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    footer li {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    footer a {
+        color: #fff;
+        text-decoration: none;
+    }
+

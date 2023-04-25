@@ -1,0 +1,54 @@
+﻿@page
+@model NapocaBike.Pages.UpdateProfileModel
+@{
+    ViewData["Title"] = "Update Profile";
+}
+
+<h2>Update Profile</h2>
+
+<div>
+    <form method="post">
+        <input type="hidden" asp-for="Member.ID" />
+
+        <div>
+            <label asp-for="Member.FirstName"></label>
+            <input asp-for="Member.FirstName" />
+            <span asp-validation-for="Member.FirstName"></span>
+        </div>
+
+        <div>
+            <label asp-for="Member.LastName"></label>
+            <input asp-for="Member.LastName" />
+            <span asp-validation-for="Member.LastName"></span>
+        </div>
+
+        <div>
+            <label asp-for="Member.Adress"></label>
+            <input asp-for="Member.Adress" />
+            <span asp-validation-for="Member.Adress"></span>
+        </div>
+
+        <div>
+            <label asp-for="Member.Email"></label>
+            <input asp-for="Member.Email" readonly />
+            <span asp-validation-for="Member.Email"></span>
+        </div>
+
+        <div>
+            <label asp-for="Member.Phone"></label>
+            <input asp-for="Member.Phone" />
+            <span asp-validation-for="Member.Phone"></span>
+        </div>
+
+        <div>
+            <input type="submit" value="Update Profile" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

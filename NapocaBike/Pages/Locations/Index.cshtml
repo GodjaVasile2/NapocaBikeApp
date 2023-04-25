@@ -1,0 +1,165 @@
+﻿@page
+@model NapocaBike.Pages.Locations.IndexModel
+
+@{
+    ViewData["Title"] = "Locations list ";
+}
+
+<h1>Locations</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<div id="map" style="height:400px;"></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Location[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location[0].Adress)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Location[0].Program)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location[0].Latitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location[0].Longitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location[0].LocationCategories)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LocationD.Locations)
+        {
+            string selectedRow = "";
+            if (item.ID == Model.LocationID)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Adress)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Program)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Latitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Longitude)
+                </td>
+                <td>
+                    @{
+                        foreach (var category in item.LocationCategories)
+                        {
+                            @: @category.Category.CategoryName <br />
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    @*                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                *@                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@section Scripts {
+    <script>
+        var map;
+        var currentLocationMarker;
+        let markers = [];
+
+
+
+
+
+
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 46.770439, lng: 23.591423 },
+                zoom: 12
+            });
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+
+        @foreach (var item in Model.LocationD.Locations)
+        {
+            <text>
+                    (function () {
+                        const position = { lat: @item.Latitude, lng: @item.Longitude };
+
+                        const marker = new google.maps.Marker({
+                            position,
+                            map,
+                            title: '@item.Name',
+                        });
+
+                        const infowindow = new google.maps.InfoWindow({
+                            content: `
+                                                <div>
+                                                    <h3>@item.Name</h3>
+                                                    <p>Address: @item.Adress</p>
+                                                    <p>Program: @item.Program</p>
+                                                </div>
+                                            `,
+                        });
+
+                        marker.addListener("click", () => {
+                            infowindow.open(map, marker);
+                        });
+
+                        markers.push(marker);
+                    })();
+            </text>
+        }
+
+        }
+
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+
+            currentLocationMarker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+                icon: {
+                    url: "/Icons/person.png",
+                    scaledSize: new google.maps.Size(32, 32) // specify the size of the icon
+                },
+                title: "Your Current Location"
+            });
+
+            map.setCenter({ lat: lat, lng: lng });
+            map.setZoom(15);
+        }
+    </script>
+    <script src="~/GoogleMapsApiProxy" async defer></script>
+}
+
+
+

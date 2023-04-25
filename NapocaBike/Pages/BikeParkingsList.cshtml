@@ -1,0 +1,177 @@
+﻿@page
+@model NapocaBike.Pages.BikeParkings.IndexModel
+
+@{
+    ViewData["Title"] = "Available Parking Spaces";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Napoca</title>
+
+    <link rel="stylesheet" href="~/css/stil.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+</head>
+
+<body>
+
+    <section>
+        <input type="checkbox" id="check">
+        <header>
+            <h2><a href="#" class="logo"> Logo </a></h2>
+
+            <div class="navigation">
+                <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
+                <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
+                <a asp-area="" asp-page="/BikeParkings/Index" class="menu-item">AdminParkings</a>
+                <a asp-area="" asp-page="/Locations/Index" class="menu-item">AdminLocations</a>
+                <a asp-area="" asp-page="/BikeRentals/Create" class="menu-item">Rentals</a>
+
+                <a href="#" class="menu-item">AboutUs</a>
+                <partial name="_LoginPartial" />
+            </div>
+            <label for="check">
+                <i class="fas fa-bars menu-btn"></i>
+                <i class="fas fa-times close-btn"></i>
+            </label>
+
+
+        </header>
+        <form method="get">
+            <div class="form-group">
+                <label>Capacity:</label>
+                <input type="number" name="CapacityFilter" class="form-control" value="@Model.CapacityFilter" />
+            </div>
+            <div class="form-group">
+                <label>SecurityLevel:</label>
+                <input type="number" name="SecurityFilter" class="form-control" value="@Model.SecurityFilter" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" asp-page-handler="filter">Filter</button>
+                <a asp-page="./Index" class="btn btn-secondary ml-2">Clear</a>
+            </div>
+        </form>
+        <div id="map" style="height:400px;"></div>
+        <h2>Security Levels</h2>
+        <ul>
+            <li>Level 1: Basic security - simple bike racks, minimal surveillance</li>
+            <li>Level 2: Moderate security - secure bike racks, some surveillance</li>
+            <li>Level 3: High security - locked bike rooms, cameras, and/or on-site staff</li>
+            <li>Level 4: Very high security - card access control, individual bike lockers</li>
+        </ul>
+     </section>    
+</body>
+</html>
+
+
+
+@section Scripts {
+
+    <script>
+        var map;
+        var currentLocationMarker;
+        let markers = [];
+        var directionsService;
+        var directionsRenderer;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 46.770439, lng: 23.591423 },
+                zoom: 12
+            });
+
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+            directionsRenderer.setMap(map);
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+
+        @foreach (var item in Model.BikeParking)
+        {
+            <text>
+                    (function () {
+                        const position = { lat: @item.Latitude, lng: @item.Longitude };
+
+                        const marker = new google.maps.Marker({
+                            position,
+                            map,
+                            title: '@item.Name',
+                        });
+
+                        const infowindow = new google.maps.InfoWindow({
+                            content: `
+                                                <div>
+                                                    <h3>@item.Name</h3>
+                                                    <p>Capacity: @item.Capacity</p>
+                                                    <p>Security Level: @item.SecurityLevel</p>
+                                                </div>
+                                            `,
+                        });
+
+                        marker.addListener("click", () => {
+                            infowindow.open(map, marker);
+                            calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocationMarker.getPosition(), marker.getPosition());
+                        });
+
+                        markers.push(marker);
+                    })();
+            </text>
+        }
+                }
+
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+
+            currentLocationMarker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+                icon: {
+                    url: "/Icons/person.png",
+                    scaledSize: new google.maps.Size(32, 32) // specify the size of the icon
+                },
+                title: "Your Current Location"
+            });
+
+            map.setCenter({ lat: lat, lng: lng });
+            map.setZoom(15);
+        }
+
+
+
+
+
+
+
+
+        function calculateAndDisplayRoute(directionsService, directionsRenderer, origin, destination) {
+            directionsService.route(
+                {
+                    origin: origin,
+                    destination: destination,
+                    travelMode: google.maps.TravelMode.WALKING
+                },
+                (response, status) => {
+                    if (status === google.maps.DirectionsStatus.OK) {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                }
+            );
+        }
+
+        document.getElementById("filterByDistance").addEventListener("click", filterByDistance);
+    </script>
+    <script src="~/GoogleMapsApiProxy" async defer></script>
+}

@@ -1,0 +1,190 @@
+﻿@page
+@model NapocaBike.Pages.BikeParkings.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+
+<div id="map" style="height:400px;"></div>
+
+<form method="get">
+    <div class="form-group">
+        <label>Capacity:</label>
+        <input type="number" name="CapacityFilter" class="form-control" value="@Model.CapacityFilter" />
+    </div>
+    <div class="form-group">
+        <label>SecurityLevel:</label>
+        <input type="number" name="SecurityFilter" class="form-control" value="@Model.SecurityFilter" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" asp-page-handler="filter">Filter</button>
+        <a asp-page="./Index" class="btn btn-secondary ml-2">Clear</a>
+    </div>
+</form>
+
+
+
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BikeParking[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BikeParking[0].Latitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BikeParking[0].Longitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BikeParking[0].Capacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BikeParking[0].SecurityLevel)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.BikeParking)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Latitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Longitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Capacity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SecurityLevel)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+
+    <script>
+        var map;
+        var currentLocationMarker;
+        let markers = [];
+        var directionsService;
+        var directionsRenderer;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 46.770439, lng: 23.591423 },
+                zoom: 12
+            });
+
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+            directionsRenderer.setMap(map);
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+
+        @foreach (var item in Model.BikeParking)
+        {
+            <text>
+                    (function () {
+                        const position = { lat: @item.Latitude, lng: @item.Longitude };
+
+                        const marker = new google.maps.Marker({
+                            position,
+                            map,
+                            title: '@item.Name',
+                        });
+
+                        const infowindow = new google.maps.InfoWindow({
+                            content: `
+                                    <div>
+                                        <h3>@item.Name</h3>
+                                        <p>Capacity: @item.Capacity</p>
+                                        <p>Security Level: @item.SecurityLevel</p>
+                                    </div>
+                                `,
+                        });
+
+                        marker.addListener("click", () => {
+                            infowindow.open(map, marker);
+                            calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocationMarker.getPosition(), marker.getPosition());
+                        });
+
+                        markers.push(marker);
+                    })();
+            </text>
+        }
+        }
+
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+
+            currentLocationMarker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+                icon: {
+                    url: "/Icons/person.png",
+                    scaledSize: new google.maps.Size(32, 32) // specify the size of the icon
+                },
+                title: "Your Current Location"
+            });
+
+            map.setCenter({ lat: lat, lng: lng });
+            map.setZoom(15);
+        }
+
+       
+
+        
+                
+
+       
+
+        function calculateAndDisplayRoute(directionsService, directionsRenderer, origin, destination) {
+            directionsService.route(
+                {
+                    origin: origin,
+                    destination: destination,
+                    travelMode: google.maps.TravelMode.WALKING
+                },
+                (response, status) => {
+                    if (status === google.maps.DirectionsStatus.OK) {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                }
+            );
+        }
+
+        document.getElementById("filterByDistance").addEventListener("click", filterByDistance);
+    </script>
+    <script src="~/GoogleMapsApiProxy" async defer></script>
+}

@@ -1,0 +1,132 @@
+﻿
+@page
+@model NapocaBike.Pages.BikeRentalLocations.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Napoca</title>
+    <link rel="stylesheet" href="~/css/stylewelcome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+</head>
+
+<body>
+
+    <section>
+        <input type="checkbox" id="check">
+        <header>
+            <h2><a href="#" class="logo"> Logo </a></h2>
+
+            <div class="navigation">
+                <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
+                <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
+                <a asp-area="" asp-page="/BikeParkings/Index" class="menu-item">AdminParkings</a>
+                <a asp-area="" asp-page="/Locations/Index" class="menu-item">AdminLocations</a>
+                <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
+
+                <a href="#" class="menu-item">AboutUs</a>
+                <partial name="_LoginPartial" />
+            </div>
+            <label for="check">
+                <i class="fas fa-bars menu-btn"></i>
+                <i class="fas fa-times close-btn"></i>
+            </label>
+
+
+        </header>
+        
+        <div id="map" style="height:400px;"></div>
+        
+    </section>
+</body>
+</html>
+@section Scripts {
+    <script>
+
+
+        async function geocodeAddress(address) {
+            const geocoder = new google.maps.Geocoder();
+            return new Promise((resolve, reject) => {
+                geocoder.geocode({
+                    address: address,
+                    componentRestrictions: {
+                        country: 'RO',
+                        locality: 'Cluj-Napoca'
+                    }
+                }, (results, status) => {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        const lat = results[0].geometry.location.lat();
+                        const lng = results[0].geometry.location.lng();
+                        resolve({ lat, lng });
+                    } else {
+                        reject(status);
+                    }
+                });
+            });
+        }
+
+
+
+    async function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 46.770439, lng: 23.591423 },
+        zoom: 13,
+    });
+
+    const locations = @Html.Raw(Json.Serialize(Model.BikeRentalLocation));
+
+    for (const location of locations) {
+        try {
+            const position = await geocodeAddress(location.name);
+            
+
+            const marker = new google.maps.Marker({
+                position,
+                map,
+                title: location.name,
+            });
+
+            const infowindow = new google.maps.InfoWindow({
+                content: `
+                    <div>
+                        <h3>${location.name}</h3>
+                        <p>Empty Spaces: ${location.emptySpaces}</p>
+                        <p>Bikes Available: ${location.bikesAvailable}</p>
+                        <p>Address: ${location.adress}</p>
+                    </div>
+                `,
+            });
+
+            marker.addListener("click", () => {
+                infowindow.open(map, marker);
+            });
+
+            markers.push(marker);
+        } catch (error) {
+            console.error(`Geocoding failed for address: ${location.adress}, reason: ${error}`);
+        }
+    }
+
+
+}
+
+
+
+
+    </script>
+
+
+
+
+    <script src="~/GoogleMapsApiProxy" async defer></script>
+}
+
