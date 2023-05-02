@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -15,17 +16,27 @@ namespace NapocaBike.Pages.BikeRentalLocations
     public class IndexModel : PageModel
     {
         private readonly NapocaBike.Data.NapocaBikeContext _context;
+        private readonly ILogger<BikeParkingsListModel> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public IndexModel(NapocaBike.Data.NapocaBikeContext context)
+        public IndexModel(ILogger<BikeParkingsListModel> logger, UserManager<IdentityUser> userManager, NapocaBikeContext context)
         {
+            _logger = logger;
+            _userManager = userManager;
             _context = context;
         }
-
+        public Member CurrentMember { get; set; }
         public IList<BikeRentalLocation> BikeRentalLocation { get; set; } = default!;
         public IList<Location> Locations { get; set; } = default!; // Add this line
 
         public async Task OnGetAsync()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                CurrentMember = await _context.Member.FirstOrDefaultAsync(m => m.Email == user.Email);
+            }
+
             await FetchAndSaveData();
             if (_context.BikeRentalLocation != null)
             {

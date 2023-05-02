@@ -10,9 +10,132 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bike Napoca</title>
+    <title>Locations</title>
     <link rel="stylesheet" href="~/css/locations.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <style>
+
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-menu .dropdown-item {
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-menu .dropdown-item:hover {
+                    background-color: #D9AF32;
+                }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .login-container {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            padding-left: 30px;
+        }
+        /* Login Modal */
+        .login-btn {
+            cursor: pointer;
+        }
+
+        .login-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .filter-btn {
+            width: 50px;
+            height: 50px;
+            background-color: #D9AF32;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            padding: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 9999;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .filter-btn:hover {
+                background-color: #C28E1E;
+                transform: scale(1.1);
+            }
+
+
+        #filter-form {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 999;
+            transition: all 0.3s ease-in-out;
+        }
+
+            #filter-form.show {
+                right: 0;
+            }
+
+            #filter-form form {
+                padding: 20px;
+            }
+
+            #filter-form label {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            #filter-form input[type="number"] {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+        .menu-item {
+            display: inline-block;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -20,17 +143,34 @@
     <section>
         <input type="checkbox" id="check">
         <header>
-            <h2><a href="#" class="logo"> Logo </a></h2>
+            <h2><a href="#" class="logo"> Napoca Bike </a></h2>
 
             <div class="navigation">
                 <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
                 <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
-                <a asp-area="" asp-page="/BikeParkings/Index" class="menu-item">AdminParkings</a>
-                <a asp-area="" asp-page="/Locations/Index" class="menu-item">AdminLocations</a>
-                <a asp-area="" asp-page="/BikeRentals/Create" class="menu-item">Rentals</a>
+                <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
+                <div class="menu-item dropdown">
+                    <a href="#" class="dropdown-toggle">Admin</a>
+                    <div class="dropdown-menu">
+                        <a asp-area="" asp-page="/BikeRentalLocations/Index" class="dropdown-item ">AdminRentals</a>
+                        <a asp-area="" asp-page="/BikeParkings/Index" class="dropdown-item">AdminParkings</a>
+                        <a asp-area="" asp-page="/Locations/Index" class="dropdown-item">AdminLocations</a>
+                        <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Categories</a>
+                        <a asp-area="" asp-page="/Members/Index" class="dropdown-item">Members</a>
 
-                <a href="#" class="menu-item">AboutUs</a>
-                <partial name="_LoginPartial" />
+                    </div>
+                </div>
+                <div class="menu-item">
+                    @if (Model.CurrentMember != null && !string.IsNullOrEmpty(Model.CurrentMember.ProfilePicturePath))
+                    {
+                        <img id="login-btn" class="login-btn" src="@Model.CurrentMember.ProfilePicturePath" alt="Profile Picture" width="40" height="40" style="border-radius: 50%;" />
+                    }
+                    else
+                    {
+                        <a id="login-btn" class="login-btn">Login</a>
+                    }
+                </div>
+         
             </div>
             <label for="check">
                 <i class="fas fa-bars menu-btn"></i>
@@ -39,6 +179,15 @@
 
 
         </header>
+
+        <div id="login-modal" class="login-modal">
+            <div class="modal-content">
+
+                <partial name="_LoginPartial" />
+
+            </div>
+        </div>
+
         <div class="content-container">
             <!-- Left column for the location list -->
             <div class="locations-list">
@@ -54,8 +203,24 @@
             </div>
 
             <!-- Right column for the map -->
-            <div class="map-container">
-                <div id="map" style="height:400px;"></div>
+            <form method="get">
+                <div class="form-group">
+                    <label>Category:</label>
+                    <select name="CategoryFilter" class="form-control">
+                        <option value="">-- Select Category --</option>
+                        @{
+                            foreach (var category in Model.LocationD.Categories)
+                            {
+                                <option value="@category.ID" selected="@(Model.CategoryFilter == category.ID)">@category.CategoryName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a asp-page="./Index" class="btn btn-secondary ml-2">Clear</a>
+                </div>
+            </form>
             </div>
         </div>
     </section>
@@ -84,21 +249,81 @@
 
 @section Scripts {
     <script>
+        // Get the modal
+        var modal = document.getElementById("login-modal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("login-btn");
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        };
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+    <script>
         var map;
         var currentLocationMarker;
         let markers = [];
+        var directionsService;
+        var directionsRenderer;
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 46.770439, lng: 23.591423 },
-                zoom: 12
+                zoom: 12,
+                mapId: 'fd46ebf30d389dd2',
+                disableDefaultUI: true, // Disable default UI controls
+                mapTypeControl: false, // Remove map type control (e.g., satellite mode)
+                streetViewControl: false, // Remove street view control
+                fullscreenControl: true, // Remove fullscreen control
+                zoomControl: true // Enable zoom control
             });
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                suppressMarkers: true,
+                polylineOptions: {
+                    strokeColor: '#F2CA50', // Main color of the route line
+                    strokeOpacity: 0.8, // Opacity of the route line (0.0 - 1.0)
+                    strokeWeight: 6, // Thickness of the route line
+                    icons: [
+                        {
+                            icon: {
+                                path: 'M 0,-1 0,1',
+                                strokeColor: '#F25757',
+                                strokeOpacity: 0.8,
+                                strokeWeight: 2,
+                            },
+                            offset: '0',
+                            repeat: '10px',
+                        },
+                        {
+                            icon: {
+                                path: 'M 0,-1 0,1',
+                                strokeColor: '#F2CA50',
+                                strokeOpacity: 0.8,
+                                strokeWeight: 2,
+                            },
+                            offset: '5px',
+                            repeat: '20px',
+                        },
+                    ],
+                },
+            });
+            directionsRenderer.setMap(map);
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
             } else {
                 alert("Geolocation is not supported by this browser.");
             }
+
 
         @foreach (var item in Model.LocationD.Locations)
         {
@@ -110,6 +335,10 @@
                             position,
                             map,
                             title: '@item.Name',
+                            icon: {
+                                url: "/icons/pin3.png",
+                                scaledSize: new google.maps.Size(32, 32)
+                            },
                         });
 
                         const infowindow = new google.maps.InfoWindow({
@@ -118,12 +347,22 @@
                                                                 <h3>@item.Name</h3>
                                                                 <p>Address: @item.Adress</p>
                                                                 <p>Program: @item.Program</p>
+                                                                <p>Program: @item.Program</p>
+                                                                <p>Category: @{
+                                                                string concatenatedCategories = "";
+                                                                foreach (var category in item.LocationCategories)
+                                                                {
+                                                                    concatenatedCategories += category.Category.CategoryName + ", ";
+                                                                }
+                                                                concatenatedCategories = concatenatedCategories.Trim().TrimEnd(',');
+                                                            }@concatenatedCategories</p>
                                                             </div>
                                                         `,
                         });
 
                         marker.addListener("click", () => {
                             infowindow.open(map, marker);
+                            calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocationMarker.getPosition(), marker.getPosition());
                         });
 
                         markers.push(marker);
@@ -131,6 +370,8 @@
             </text>
         }
                         }
+
+
 
         function showPosition(position) {
             var lat = position.coords.latitude;
@@ -140,7 +381,7 @@
                 position: { lat: lat, lng: lng },
                 map: map,
                 icon: {
-                    url: "/Icons/person.png",
+                    url: "/Icons/me2.png",
                     scaledSize: new google.maps.Size(32, 32) // specify the size of the icon
                 },
                 title: "Your Current Location"
@@ -149,6 +390,40 @@
             map.setCenter({ lat: lat, lng: lng });
             map.setZoom(15);
         }
+
+        function calculateAndDisplayRoute(directionsService, directionsRenderer, origin, destination) {
+            // First, try the BICYCLING travel mode
+            directionsService.route(
+                {
+                    origin: origin,
+                    destination: destination,
+                    travelMode: google.maps.TravelMode.BICYCLING
+                },
+                (response, status) => {
+                    if (status === google.maps.DirectionsStatus.OK) {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        // If BICYCLING is not available, fall back to WALKING
+                        directionsService.route(
+                            {
+                                origin: origin,
+                                destination: destination,
+                                travelMode: google.maps.TravelMode.WALKING
+                            },
+                            (response, status) => {
+                                if (status === google.maps.DirectionsStatus.OK) {
+                                    directionsRenderer.setDirections(response);
+                                } else {
+                                    window.alert('Directions request failed due to ' + status);
+                                }
+                            }
+                        );
+                    }
+                }
+            );
+        }
+
+
     </script>
     
     <script src="~/GoogleMapsApiProxy" async defer></script>

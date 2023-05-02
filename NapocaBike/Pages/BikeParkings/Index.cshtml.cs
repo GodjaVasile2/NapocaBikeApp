@@ -10,17 +10,24 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authentication;
 using NapocaBike.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace NapocaBike.Pages.BikeParkings
 {
     public class IndexModel : PageModel
     {
         private readonly NapocaBikeContext _context;
+        private readonly ILogger<BikeParkingsListModel> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public IndexModel(NapocaBikeContext context)
+        public IndexModel(ILogger<BikeParkingsListModel> logger, UserManager<IdentityUser> userManager, NapocaBikeContext context)
         {
+            _logger = logger;
+            _userManager = userManager;
             _context = context;
         }
+        public Member CurrentMember { get; set; }
+
 
         public IList<BikeParking> BikeParking { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -30,6 +37,15 @@ namespace NapocaBike.Pages.BikeParkings
 
         public async Task OnGetAsync()
         {
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                CurrentMember = await _context.Member.FirstOrDefaultAsync(m => m.Email == user.Email);
+            }
+
+
+
             IQueryable<BikeParking> bikeParkingsQuery = _context.BikeParking;
 
             if (CapacityFilter > 0 && SecurityFilter > 0)

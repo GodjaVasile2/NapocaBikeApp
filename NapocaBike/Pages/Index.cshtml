@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bike Napoca</title>
-    <link rel="stylesheet" href="~/css/stylewelcome.css">
+    <link rel="stylesheet" href="~/css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
    <style>
 
@@ -76,7 +76,7 @@
             border: 1px solid #888;
             width: 80%;
         }
-
+        
    </style>
 </head>
 
@@ -85,13 +85,13 @@
     <section>
         <input type="checkbox" id="check">
         <header>
-            <h2><a href="#" class="logo"> Logo </a></h2>
+            <h2><a href="#" class="logo"> Napoca Bike </a></h2>
 
             <div class="navigation">
                 <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
                 <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
                 <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
-                <a asp-area="" asp-page="/UpdateProfile" class="menu-item">Update</a>
+               
                
               
                 <div class="menu-item dropdown">
@@ -100,11 +100,22 @@
                         <a asp-area="" asp-page="/BikeRentalLocations/Index" class="dropdown-item ">AdminRentals</a>
                         <a asp-area="" asp-page="/BikeParkings/Index" class="dropdown-item">AdminParkings</a>
                         <a asp-area="" asp-page="/Locations/Index" class="dropdown-item">AdminLocations</a>
-                        <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Members</a>
+                        <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Categories</a>
+                        <a asp-area="" asp-page="/Members/Index" class="dropdown-item">Members</a>
                         
                     </div>
                 </div>
-                <a id="login-btn" class="login-btn">Login</a>
+                <div class="menu-item">
+                    @if (Model.CurrentMember != null && !string.IsNullOrEmpty(Model.CurrentMember.ProfilePicturePath))
+                    {
+                        <img id="login-btn" class="login-btn"  src="@Model.CurrentMember.ProfilePicturePath" alt="Profile Picture" width="40" height="40" style="border-radius: 50%;" />
+                    }
+                    else
+                    {
+                        <a id="login-btn" class="login-btn">Login</a>
+                    }
+                </div>
+
 
                 
             </div>

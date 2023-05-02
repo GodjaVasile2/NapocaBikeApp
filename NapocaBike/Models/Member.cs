@@ -19,5 +19,7 @@ namespace NapocaBike.Models
                 return FirstName + " " + LastName;
             }
         }
+        public string? ProfilePicturePath { get; set; }
+
     }
 }

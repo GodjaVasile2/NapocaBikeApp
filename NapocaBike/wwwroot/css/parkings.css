@@ -40,7 +40,7 @@ header {
 
     header .logo {
         color: #C28E1E;
-        position: relative;
+        position: relative;      
         font-size: 30px;
         text-decoration: none;
         text-transform: uppercase;
@@ -53,20 +53,22 @@ header {
         align-items: center;
     }
 
-        header .navigation a {
-            display: flex;
-            align-items: center;
-            color: #000;
-            text-decoration: none;
-            font-weight: 600;
-            letter-spacing: 1px;
-            padding: 2px 15px;
-            border-radius: 20px;
-            transition: 0.3s;
-            transition-property: background;
-        }
+    header .navigation a {
+        display: flex;
+        align-items: center;
+        color: #000;
+        text-decoration: none;
+        font-weight: 600;
+        letter-spacing: 1px;
+        padding: 2px 15px;
+        border-radius: 20px;
+        transition: 0.3s;
+        transition-property: background;
+    }
 
-
+.menu-item {
+    display: inline-block;
+}
 
 header .navigation a:not(:last-child) {
     margin-right: 30px;
@@ -172,3 +174,6 @@ label {
         }
     }
 }
+
+
+

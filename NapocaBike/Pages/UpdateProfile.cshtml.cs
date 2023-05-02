@@ -1,9 +1,13 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NapocaBike.Data;
 using NapocaBike.Models;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace NapocaBike.Pages
 {
@@ -22,6 +26,10 @@ namespace NapocaBike.Pages
 
         [BindProperty]
         public Member Member { get; set; }
+        
+        [BindProperty]
+        [Display(Name = "Profile Picture")]
+        public IFormFile ProfilePicture { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -54,6 +62,13 @@ namespace NapocaBike.Pages
             if (user == null)
             {
                 return RedirectToPage("/Index");
+            }
+
+            // Save the new profile picture if one is provided
+            if (ProfilePicture != null)
+            {
+                // Save the profile picture file and update Member.ProfilePicturePath
+                // ...
             }
 
             // Update the Member information in the database

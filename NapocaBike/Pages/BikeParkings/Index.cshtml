@@ -99,9 +99,20 @@
             });
 
             directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                suppressMarkers: true,
+                polylineOptions: {
+                    strokeColor: 'black',
+                    strokeOpacity: 1,
+                    strokeWeight: 2,
+                    icons: [{
+                        icon: { path: google.maps.SymbolPath.CIRCLE, scale: 1 },
+                        offset: '0',
+                        repeat: '5px'
+                    }]
+                }
+            });
             directionsRenderer.setMap(map);
-
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
             } else {
@@ -160,12 +171,11 @@
             map.setZoom(15);
         }
 
-       
 
-        
-                
 
-       
+
+
+
 
         function calculateAndDisplayRoute(directionsService, directionsRenderer, origin, destination) {
             directionsService.route(

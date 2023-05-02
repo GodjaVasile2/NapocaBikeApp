@@ -13,9 +13,132 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bike Napoca</title>
 
-    <link rel="stylesheet" href="~/css/stil.css">
+    <link rel="stylesheet" href="~/css/parkings.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+       <style>
 
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-menu .dropdown-item {
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-menu .dropdown-item:hover {
+                    background-color: #D9AF32;
+                }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .login-container {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            padding-left: 30px;
+        }
+        /* Login Modal */
+        .login-btn {
+            cursor: pointer;
+        }
+
+        .login-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .filter-btn {
+            width:50px;
+            height:50px;
+            background-color: #D9AF32;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            padding: 10px; 
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 9999;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .filter-btn:hover {
+                background-color: #C28E1E;
+                transform: scale(1.1);
+            }
+
+
+        #filter-form {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 999;
+            transition: all 0.3s ease-in-out;
+        }
+
+            #filter-form.show {
+                right: 0;
+            }
+
+            #filter-form form {
+                padding: 20px;
+            }
+
+            #filter-form label {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            #filter-form input[type="number"] {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+
+
+
+
+
+   </style>
 </head>
 
 <body>
@@ -23,18 +146,40 @@
     <section>
         <input type="checkbox" id="check">
         <header>
-            <h2><a href="#" class="logo"> Logo </a></h2>
 
+            <h2><a href="#" class="logo"> Napoca Bike </a></h2>
             <div class="navigation">
                 <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
                 <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
-                <a asp-area="" asp-page="/BikeParkings/Index" class="menu-item">AdminParkings</a>
-                <a asp-area="" asp-page="/Locations/Index" class="menu-item">AdminLocations</a>
-                <a asp-area="" asp-page="/BikeRentals/Create" class="menu-item">Rentals</a>
+                <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
+               
 
-                <a href="#" class="menu-item">AboutUs</a>
-                <partial name="_LoginPartial" />
+
+                <div class="menu-item dropdown">
+                    <a href="#" class="dropdown-toggle">Admin</a>
+                    <div class="dropdown-menu">
+                        <a asp-area="" asp-page="/BikeRentalLocations/Index" class="dropdown-item ">AdminRentals</a>
+                        <a asp-area="" asp-page="/BikeParkings/Index" class="dropdown-item">AdminParkings</a>
+                        <a asp-area="" asp-page="/Locations/Index" class="dropdown-item">AdminLocations</a>
+                        <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Categories</a>
+                        <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Members</a>
+
+                    </div>
+                </div>
+                <div class="menu-item">
+                    @if (Model.CurrentMember != null && !string.IsNullOrEmpty(Model.CurrentMember.ProfilePicturePath))
+                    {
+                            <img id="login-btn" class="login-btn" src="@Model.CurrentMember.ProfilePicturePath" alt="Profile Picture" width="40" height="40" style="border-radius: 50%;" />
+                    }
+                    else
+                    {
+                            <a id="login-btn" class="login-btn">Login</a>
+                    }
+                </div>
+
+
             </div>
+
             <label for="check">
                 <i class="fas fa-bars menu-btn"></i>
                 <i class="fas fa-times close-btn"></i>
@@ -42,28 +187,57 @@
 
 
         </header>
-        <form method="get">
-            <div class="form-group">
-                <label>Capacity:</label>
-                <input type="number" name="CapacityFilter" class="form-control" value="@Model.CapacityFilter" />
+
+        <div id="login-modal" class="login-modal">
+            <div class="modal-content">
+
+                    <partial name="_LoginPartial" />
+
             </div>
-            <div class="form-group">
-                <label>SecurityLevel:</label>
-                <input type="number" name="SecurityFilter" class="form-control" value="@Model.SecurityFilter" />
+        </div>
+
+        <div style="position: relative;">
+            <div id="map" style="height:600px; margin-top:20px;"></div>
+            <button class="filter-btn" style="position: absolute; bottom: 10px; left: 10px;"><i class="fas fa-filter"></i></button>
+            <div id="filter-form" >
+                <form method="get">
+                    <div class="form-group">
+                        <label for="capacity-filter">Capacity:</label>
+                        <input type="number" id="capacity-filter" name="CapacityFilter" class="form-control" value="@Model.CapacityFilter" />
+                    </div>
+                    <div class="form-group">
+                        <label for="security-filter">Security Level:</label>
+                        <input type="number" id="security-filter" name="SecurityFilter" class="form-control" value="@Model.SecurityFilter" />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" asp-page-handler="filter">Filter</button>
+                        <a asp-page="./Index" class="btn btn-secondary ml-2">Clear</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" asp-page-handler="filter">Filter</button>
-                <a asp-page="./Index" class="btn btn-secondary ml-2">Clear</a>
-            </div>
-        </form>
-        <div id="map" style="height:400px;"></div>
+        </div>
+
+
+
         <h2>Security Levels</h2>
-        <ul>
-            <li>Level 1: Basic security - simple bike racks, minimal surveillance</li>
-            <li>Level 2: Moderate security - secure bike racks, some surveillance</li>
-            <li>Level 3: High security - locked bike rooms, cameras, and/or on-site staff</li>
-            <li>Level 4: Very high security - card access control, individual bike lockers</li>
-        </ul>
+        <div class="grid-container">
+            <div class="grid-item">
+                <img src="~/Icons/SimpleBikeRacks.jpg" alt="Level 1">
+                <p>Level 1: Basic security - simple bike racks, minimal surveillance</p>
+            </div>
+            <div class="grid-item">
+                <img src="~/Icons/Moderate.jpg" alt="Level 2">
+                <p>Level 2: Moderate security - secure bike racks, some surveillance</p>
+            </div>
+            <div class="grid-item">
+                <img src="~/Icons/High.jpg" alt="Level 3">
+                <p>Level 3: High security - locked bike rooms, cameras, and/or on-site staff</p>
+            </div>
+            <div class="grid-item">
+                <img src="~/Icons/VeryHigh.jpg" alt="Level 4">
+                <p>Level 4: Very high security - card access control, individual bike lockers</p>
+            </div>
+        </div>
      </section>    
 </body>
 </html>
@@ -71,107 +245,188 @@
 
 
 @section Scripts {
+        <script>
 
-    <script>
-        var map;
-        var currentLocationMarker;
-        let markers = [];
-        var directionsService;
-        var directionsRenderer;
 
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 46.770439, lng: 23.591423 },
-                zoom: 12
+            // Get the filter button and filter form
+            const filterBtn = document.querySelector('.filter-btn');
+            const filterForm = document.querySelector('#filter-form');
+
+            // Toggle the display of the filter form when the filter button is clicked
+            filterBtn.addEventListener('click', () => {
+                filterForm.classList.toggle('show');
             });
 
-            directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
-            directionsRenderer.setMap(map);
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
+
+
+            // Get the modal
+            var modal = document.getElementById("login-modal");
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("login-btn");
+
+            // When the user clicks the button, open the modal
+            btn.onclick = function () {
+                modal.style.display = "block";
+            };
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            };
+
+            </script>
+        <script>
+            var map;
+            var currentLocationMarker;
+            let markers = [];
+            var directionsService;
+            var directionsRenderer;
+
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: 46.770439, lng: 23.591423 },
+                    zoom: 12,
+                    mapId: 'fd46ebf30d389dd2',
+                    disableDefaultUI: true, // Disable default UI controls
+                    mapTypeControl: false, // Remove map type control (e.g., satellite mode)
+                    streetViewControl: false, // Remove street view control
+                    fullscreenControl: true, // Remove fullscreen control
+                    zoomControl: true // Enable zoom control
+                });
+
+                directionsService = new google.maps.DirectionsService();
+                directionsRenderer = new google.maps.DirectionsRenderer({
+                    suppressMarkers: true,
+                    polylineOptions: {
+                    strokeColor: '#F2CA50', // Main color of the route line
+                    strokeOpacity: 0.8, // Opacity of the route line (0.0 - 1.0)
+                    strokeWeight: 6, // Thickness of the route line
+                    icons: [
+                    {
+                        icon: {
+                            path: 'M 0,-1 0,1',
+                            strokeColor: '#F25757',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                        },
+                        offset: '0',
+                        repeat: '10px',
+                    },
+                    {
+                        icon: {
+                            path: 'M 0,-1 0,1',
+                                strokeColor: '#F2CA50',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                        },
+                        offset: '5px',
+                        repeat: '20px',
+                    },
+                ],
+                },
+                });
+                directionsRenderer.setMap(map);
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                }
 
         @foreach (var item in Model.BikeParking)
         {
             <text>
-                    (function () {
-                        const position = { lat: @item.Latitude, lng: @item.Longitude };
+                            (function () {
+                                const position = { lat: @item.Latitude, lng: @item.Longitude };
 
-                        const marker = new google.maps.Marker({
-                            position,
-                            map,
-                            title: '@item.Name',
-                        });
+                                const marker = new google.maps.Marker({
+                                    position,
+                                    map,
+                                    title: '@item.Name',
+                                    icon: {
+                                        url: "/icons/pin3.png", 
+                                        scaledSize: new google.maps.Size(32, 32) 
+                                },
+                                });
 
-                        const infowindow = new google.maps.InfoWindow({
-                            content: `
-                                                <div>
-                                                    <h3>@item.Name</h3>
-                                                    <p>Capacity: @item.Capacity</p>
-                                                    <p>Security Level: @item.SecurityLevel</p>
-                                                </div>
-                                            `,
-                        });
+                                const infowindow = new google.maps.InfoWindow({
+                                    content: `
+                                                        <div>
+                                                            <h3>@item.Name</h3>
+                                                            <p>Capacity: @item.Capacity</p>
+                                                            <p>Security Level: @item.SecurityLevel</p>
+                                                        </div>
+                                                    `,
+                                });
 
-                        marker.addListener("click", () => {
-                            infowindow.open(map, marker);
-                            calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocationMarker.getPosition(), marker.getPosition());
-                        });
+                                marker.addListener("click", () => {
+                                    infowindow.open(map, marker);
+                                    calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocationMarker.getPosition(), marker.getPosition());
+                                });
 
-                        markers.push(marker);
-                    })();
+                                markers.push(marker);
+                            })();
             </text>
         }
+  }
+
+
+            function showPosition(position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+
+                currentLocationMarker = new google.maps.Marker({
+                    position: { lat: lat, lng: lng },
+                    map: map,
+                    icon: {
+                        url: "/Icons/person.png",
+                        scaledSize: new google.maps.Size(32, 32) // specify the size of the icon
+                    },
+                    title: "Your Current Location"
+                });
+
+                map.setCenter({ lat: lat, lng: lng });
+                map.setZoom(15);
+            }
+
+    function calculateAndDisplayRoute(directionsService, directionsRenderer, origin, destination) {
+        // First, try the BICYCLING travel mode
+        directionsService.route(
+            {
+                origin: origin,
+                destination: destination,
+                travelMode: google.maps.TravelMode.BICYCLING
+            },
+            (response, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    directionsRenderer.setDirections(response);
+                } else {
+                    // If BICYCLING is not available, fall back to WALKING
+                    directionsService.route(
+                        {
+                            origin: origin,
+                            destination: destination,
+                            travelMode: google.maps.TravelMode.WALKING
+                        },
+                        (response, status) => {
+                            if (status === google.maps.DirectionsStatus.OK) {
+                                directionsRenderer.setDirections(response);
+                            } else {
+                                window.alert('Directions request failed due to ' + status);
+                            }
+                        }
+                    );
                 }
+            }
+        );
+    }
 
 
-        function showPosition(position) {
-            var lat = position.coords.latitude;
-            var lng = position.coords.longitude;
-
-            currentLocationMarker = new google.maps.Marker({
-                position: { lat: lat, lng: lng },
-                map: map,
-                icon: {
-                    url: "/Icons/person.png",
-                    scaledSize: new google.maps.Size(32, 32) // specify the size of the icon
-                },
-                title: "Your Current Location"
-            });
-
-            map.setCenter({ lat: lat, lng: lng });
-            map.setZoom(15);
-        }
-
-
-
-
-
-
-
-
-        function calculateAndDisplayRoute(directionsService, directionsRenderer, origin, destination) {
-            directionsService.route(
-                {
-                    origin: origin,
-                    destination: destination,
-                    travelMode: google.maps.TravelMode.WALKING
-                },
-                (response, status) => {
-                    if (status === google.maps.DirectionsStatus.OK) {
-                        directionsRenderer.setDirections(response);
-                    } else {
-                        window.alert('Directions request failed due to ' + status);
-                    }
-                }
-            );
-        }
-
-        document.getElementById("filterByDistance").addEventListener("click", filterByDistance);
-    </script>
-    <script src="~/GoogleMapsApiProxy" async defer></script>
+            document.getElementById("filterByDistance").addEventListener("click", filterByDistance);
+        </script>
+        <script src="~/GoogleMapsApiProxy" async defer></script>
 }

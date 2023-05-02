@@ -38,15 +38,20 @@ justify-content: space-between;
 align-items: center;
 }
 
-header .logo{
-position: relative;
-color: #000;
-font-size: 30px;
-text-decoration: none;
-text-transform: uppercase;
-font-weight: 800;
-letter-spacing: 1px;
-}
+    header .logo {
+        position: relative;
+        color: #C28E1E;
+        font-size: 30px;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+ header .navigation {
+        display: flex;
+        align-items: center;
+    }
 
 header .navigation a{
     
