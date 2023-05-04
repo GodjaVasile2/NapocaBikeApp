@@ -64,16 +64,38 @@ namespace NapocaBike.Pages
                 return RedirectToPage("/Index");
             }
 
-            // Save the new profile picture if one is provided
-            if (ProfilePicture != null)
+            var existingMember = await _context.Member.FirstOrDefaultAsync(m => m.Email == user.Email);
+
+            if (existingMember == null)
             {
-                // Save the profile picture file and update Member.ProfilePicturePath
-                // ...
+                // Handle the case when the Member is not found in the database
             }
 
-            // Update the Member information in the database
-            _context.Attach(Member).State = EntityState.Modified;
+            // Update the fields
+            existingMember.FirstName = Member.FirstName;
+            existingMember.LastName = Member.LastName;
+            existingMember.Adress = Member.Adress;
+            existingMember.Phone = Member.Phone;
 
+            // Save the new profile picture if one is provided
+            if (ProfilePicture != null && ProfilePicture.Length > 0)
+            {
+                // Generate a unique filename
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ProfilePicture.FileName);
+
+                // Save the profile picture file to wwwroot/images folder
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await ProfilePicture.CopyToAsync(fileStream);
+                }
+
+                // Update existingMember.ProfilePicturePath with the new file path
+                existingMember.ProfilePicturePath = "/images/" + fileName;
+            }
+
+            // Save the changes
             try
             {
                 await _context.SaveChangesAsync();
@@ -85,5 +107,7 @@ namespace NapocaBike.Pages
 
             return RedirectToPage("/Index");
         }
+
+
     }
 }

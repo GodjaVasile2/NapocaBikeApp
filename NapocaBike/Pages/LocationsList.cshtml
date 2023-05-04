@@ -135,6 +135,21 @@
             display: inline-block;
         }
 
+        .content-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 100px;
+        }
+
+        .locations-list {
+            flex: 1;
+            margin-right: 30px;
+        }
+
+        .map-container {
+            flex: 1;
+        }
+
     </style>
 </head>
 
@@ -170,7 +185,7 @@
                         <a id="login-btn" class="login-btn">Login</a>
                     }
                 </div>
-         
+
             </div>
             <label for="check">
                 <i class="fas fa-bars menu-btn"></i>
@@ -186,61 +201,42 @@
                 <partial name="_LoginPartial" />
 
             </div>
+
         </div>
-
-        <div class="content-container">
-            <!-- Left column for the location list -->
-            <div class="locations-list">
-                <!-- Add this inside the locations-list div -->
-                @foreach (var item in Model.LocationD.Locations)
-                {
-                    <div class="location-item">
-                        <h3>@item.Name</h3>
-                        <p>Address: @item.Adress</p>
-                        <p>Program: @item.Program</p>
-                    </div>
-                }
-            </div>
-
-            <!-- Right column for the map -->
-            <form method="get">
-                <div class="form-group">
-                    <label>Category:</label>
-                    <select name="CategoryFilter" class="form-control">
-                        <option value="">-- Select Category --</option>
-                        @{
-                            foreach (var category in Model.LocationD.Categories)
-                            {
-                                <option value="@category.ID" selected="@(Model.CategoryFilter == category.ID)">@category.CategoryName</option>
+        <div style="position: relative;">
+            <div id="map" style="height:600px;"></div>
+            <button class="filter-btn" style="position: absolute; bottom: 10px; left: 10px;"><i class="fas fa-filter"></i></button>
+            <div id="filter-form">
+                <form method="get">
+                    <div class="form-group">
+                        
+                        <select name="CategoryFilter" class="form-control">
+                            <option value="">-- Select Category --</option>
+                            @{
+                                foreach (var category in Model.LocationD.Categories)
+                                {
+                                    <option value="@category.ID" selected="@(Model.CategoryFilter == category.ID)">@category.CategoryName</option>
+                                }
                             }
-                        }
-                    </select>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                    <a asp-page="./Index" class="btn btn-secondary ml-2">Clear</a>
-                </div>
-            </form>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" asp-page-handler="filter">Filter</button>
+                        <a asp-page="/LocationsList class="btn btn-secondary ml-2">Clear</a>
+                    </div>
+                </form>
             </div>
         </div>
+
+       
+
+              
+            
+      
     </section>
 
-    <script>
-        const locationItems = document.querySelector('.location-items');
-        const firstItem = locationItems.children[0];
-        const itemWidth = firstItem.offsetWidth + parseInt(getComputedStyle(firstItem).marginRight);
 
-        setInterval(() => {
-            locationItems.style.transition = 'transform 1s ease-in-out';
-            locationItems.style.transform = `translateX(-${itemWidth}px)`;
 
-            setTimeout(() => {
-                locationItems.style.transition = 'none';
-                locationItems.appendChild(firstItem);
-                locationItems.style.transform = 'translateX(0)';
-            }, 1000);
-        }, 5000);
-    </script>
 </body>
 </html>
 
@@ -249,6 +245,17 @@
 
 @section Scripts {
     <script>
+
+
+        // Get the filter button and filter form
+        const filterBtn = document.querySelector('.filter-btn');
+        const filterForm = document.querySelector('#filter-form');
+
+        // Toggle the display of the filter form when the filter button is clicked
+        filterBtn.addEventListener('click', () => {
+            filterForm.classList.toggle('show');
+        });
+
         // Get the modal
         var modal = document.getElementById("login-modal");
 
@@ -279,7 +286,7 @@
                 center: { lat: 46.770439, lng: 23.591423 },
                 zoom: 12,
                 mapId: 'fd46ebf30d389dd2',
-                disableDefaultUI: true, // Disable default UI controls
+                disableDefaultUI: false, // Disable default UI controls
                 mapTypeControl: false, // Remove map type control (e.g., satellite mode)
                 streetViewControl: false, // Remove street view control
                 fullscreenControl: true, // Remove fullscreen control
@@ -317,13 +324,11 @@
                 },
             });
             directionsRenderer.setMap(map);
-
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
             } else {
                 alert("Geolocation is not supported by this browser.");
             }
-
 
         @foreach (var item in Model.LocationD.Locations)
         {
@@ -343,35 +348,34 @@
 
                         const infowindow = new google.maps.InfoWindow({
                             content: `
-                                                            <div>
-                                                                <h3>@item.Name</h3>
-                                                                <p>Address: @item.Adress</p>
-                                                                <p>Program: @item.Program</p>
-                                                                <p>Program: @item.Program</p>
-                                                                <p>Category: @{
-                                                                string concatenatedCategories = "";
-                                                                foreach (var category in item.LocationCategories)
-                                                                {
-                                                                    concatenatedCategories += category.Category.CategoryName + ", ";
-                                                                }
-                                                                concatenatedCategories = concatenatedCategories.Trim().TrimEnd(',');
-                                                            }@concatenatedCategories</p>
-                                                            </div>
-                                                        `,
+                                                                        <div>
+                                                                            <h3>@item.Name</h3>
+                                                                            <p>Address: @item.Adress</p>
+                                                                            <p>Program: @item.Program</p>
+                                                                            
+                                                                            <p>Category: @{
+                            string concatenatedCategories = "";
+                            foreach (var category in item.LocationCategories)
+                            {
+                                concatenatedCategories += category.Category.CategoryName + ", ";
+                            }
+                            concatenatedCategories = concatenatedCategories.Trim().TrimEnd(',');
+                        }@concatenatedCategories</p>
+                                                                        </div>
+                                                                    `,
                         });
 
                         marker.addListener("click", () => {
                             infowindow.open(map, marker);
                             calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocationMarker.getPosition(), marker.getPosition());
+
                         });
 
                         markers.push(marker);
                     })();
             </text>
         }
-                        }
-
-
+                                }
 
         function showPosition(position) {
             var lat = position.coords.latitude;
@@ -381,8 +385,8 @@
                 position: { lat: lat, lng: lng },
                 map: map,
                 icon: {
-                    url: "/Icons/me2.png",
-                    scaledSize: new google.maps.Size(32, 32) // specify the size of the icon
+                    url: "/Icons/me.png",
+                    scaledSize: new google.maps.Size(32, 32)
                 },
                 title: "Your Current Location"
             });
@@ -422,10 +426,8 @@
                 }
             );
         }
-
-
     </script>
-    
+
     <script src="~/GoogleMapsApiProxy" async defer></script>
 
 }
