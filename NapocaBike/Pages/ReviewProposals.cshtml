@@ -1,0 +1,88 @@
+﻿@page
+@model NapocaBike.Pages.BikeParkings.ReviewProposals.ReviewProposalsModel
+@{
+    ViewData["Title"] = "Review Proposals";
+}
+
+<h1>Review Bike Parking Proposals</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Capacity</th>
+            <th>Security Level</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var proposedBikeParking in Model.ProposedBikeParkings)
+        {
+            <tr>
+                <td>@proposedBikeParking.Name</td>
+                <td>@proposedBikeParking.Latitude</td>
+                <td>@proposedBikeParking.Longitude</td>
+                <td>@proposedBikeParking.Capacity</td>
+                <td>@proposedBikeParking.SecurityLevel</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" asp-for="@proposedBikeParking.ID" name="id" />
+                        <button type="submit" asp-page-handler="Approve" class="btn btn-primary">Approve</button>
+                        <button type="submit" asp-page-handler="Reject" class="btn btn-danger ml-2">Reject</button>
+
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<h2>Review Location Proposals</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Adress</th>
+            <th>Program</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Website</th>
+            <th>CUI</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Categories</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var proposedLocation in Model.Location)
+        {
+            <tr>
+                <td>@proposedLocation.Name</td>
+                <td>@proposedLocation.Adress</td>
+                <td>@proposedLocation.Program</td>
+                <td>@proposedLocation.Phone</td>
+                <td>@proposedLocation.Email</td>
+                <td>@proposedLocation.Website</td>
+                <td>@proposedLocation.CompanyRegistrationNumber</td>
+                
+                <td>@proposedLocation.Latitude</td>
+                <td>@proposedLocation.Longitude</td>
+                <td>@proposedLocation.LocationCategories.</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" asp-for="@proposedLocation.ID" name="id" />
+                        <button type="submit" asp-page-handler="ApproveLocation" class="btn btn-primary">Approve</button>
+                        <button type="submit" asp-page-handler="RejectLocation" class="btn btn-danger ml-2">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>

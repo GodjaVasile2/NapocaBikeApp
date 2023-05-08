@@ -12,7 +12,7 @@ using NapocaBike.Data;
 namespace NapocaBike.Migrations.LibraryIdentity
 {
     [DbContext(typeof(LibraryIdentityContext))]
-    [Migration("20230407110141_CreateIdentity")]
+    [Migration("20230504212459_CreateIdentity")]
     partial class CreateIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

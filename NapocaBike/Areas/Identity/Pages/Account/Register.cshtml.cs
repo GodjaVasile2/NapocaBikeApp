@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using NapocaBike.Migrations;
+
 using NapocaBike.Models;
 
 namespace NapocaBike.Areas.Identity.Pages.Account

@@ -164,17 +164,22 @@
                 <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
                 <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
                 <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
-                <div class="menu-item dropdown">
-                    <a href="#" class="dropdown-toggle">Admin</a>
-                    <div class="dropdown-menu">
-                        <a asp-area="" asp-page="/BikeRentalLocations/Index" class="dropdown-item ">AdminRentals</a>
-                        <a asp-area="" asp-page="/BikeParkings/Index" class="dropdown-item">AdminParkings</a>
-                        <a asp-area="" asp-page="/Locations/Index" class="dropdown-item">AdminLocations</a>
-                        <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Categories</a>
-                        <a asp-area="" asp-page="/Members/Index" class="dropdown-item">Members</a>
+                <a asp-area="" asp-page="/Propose" class="menu-item">Propose</a>
+                @if (Model.IsAdmin)
+                {
+                    <div class="menu-item dropdown">
+                        <a href="#" class="dropdown-toggle">Admin</a>
+                        <div class="dropdown-menu">
+                            <a asp-area="" asp-page="/BikeRentalLocations/Index" class="dropdown-item ">AdminRentals</a>
+                            <a asp-area="" asp-page="/BikeParkings/Index" class="dropdown-item">AdminParkings</a>
+                            <a asp-area="" asp-page="/Locations/Index" class="dropdown-item">AdminLocations</a>
+                            <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Categories</a>
+                            <a asp-area="" asp-page="/Members/Index" class="dropdown-item">Members</a>
 
+                            <a asp-area="" asp-page="/ReviewProposals" class="menu-item">ReviewProposals</a>
+                        </div>
                     </div>
-                </div>
+                }
                 <div class="menu-item">
                     @if (Model.CurrentMember != null && !string.IsNullOrEmpty(Model.CurrentMember.ProfilePicturePath))
                     {
@@ -203,6 +208,7 @@
             </div>
 
         </div>
+
         <div style="position: relative;">
             <div id="map" style="height:600px;"></div>
             <button class="filter-btn" style="position: absolute; bottom: 10px; left: 10px;"><i class="fas fa-filter"></i></button>
@@ -227,6 +233,8 @@
                 </form>
             </div>
         </div>
+        <div id="directions-panel" style="background-color: white; padding: 20px; overflow: auto; height: 300px; width: 300px;"></div>
+
 
        
 
@@ -385,7 +393,7 @@
                 position: { lat: lat, lng: lng },
                 map: map,
                 icon: {
-                    url: "/Icons/me.png",
+                    url: "/Icons/bike.png",
                     scaledSize: new google.maps.Size(32, 32)
                 },
                 title: "Your Current Location"
@@ -396,7 +404,6 @@
         }
 
         function calculateAndDisplayRoute(directionsService, directionsRenderer, origin, destination) {
-            // First, try the BICYCLING travel mode
             directionsService.route(
                 {
                     origin: origin,
@@ -406,8 +413,8 @@
                 (response, status) => {
                     if (status === google.maps.DirectionsStatus.OK) {
                         directionsRenderer.setDirections(response);
+                        displayDirections(response);
                     } else {
-                        // If BICYCLING is not available, fall back to WALKING
                         directionsService.route(
                             {
                                 origin: origin,
@@ -417,6 +424,7 @@
                             (response, status) => {
                                 if (status === google.maps.DirectionsStatus.OK) {
                                     directionsRenderer.setDirections(response);
+                                    displayDirections(response);
                                 } else {
                                     window.alert('Directions request failed due to ' + status);
                                 }
@@ -426,6 +434,21 @@
                 }
             );
         }
+
+        function displayDirections(directionResult) {
+            const directionsPanel = document.getElementById('directions-panel');
+            directionsPanel.innerHTML = '';
+
+            const steps = directionResult.routes[0].legs[0].steps;
+            steps.forEach((step, index) => {
+                const stepNumber = index + 1;
+                directionsPanel.innerHTML += `<p><strong>Step ${stepNumber}:</strong> ${step.instructions}</p>`;
+                directionsPanel.innerHTML += `<p>Distance: ${step.distance.text}</p>`;
+                directionsPanel.innerHTML += `<p>Duration: ${step.duration.text}</p>`;
+                directionsPanel.innerHTML += '<hr>';
+            });
+        }
+
     </script>
 
     <script src="~/GoogleMapsApiProxy" async defer></script>

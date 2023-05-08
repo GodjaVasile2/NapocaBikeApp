@@ -8,5 +8,6 @@
         public double Longitude { get; set; }
         public int Capacity { get; set; }
         public int SecurityLevel { get; set; }
+        
     }
 }

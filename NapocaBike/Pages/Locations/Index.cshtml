@@ -6,7 +6,105 @@
 }
 
 <h1>Locations</h1>
+<style>
+    .navigation {
+        display: flex;
+        align-items: center;
+    }
 
+        .navigation .menu-item {
+            position: relative;
+            color: #000;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 2px 15px;
+            margin-right: 30px;
+            transition: 0.3s;
+            transition-property: background;
+        }
+
+            .navigation .menu-item:hover {
+                background: #D9AF32;
+                color: #fff;
+            }
+
+        .navigation .dropdown {
+            position: relative;
+        }
+
+        .navigation .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            padding: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+            .navigation .dropdown-menu a {
+                display: block;
+                padding: 5px 20px;
+                color: #000;
+                text-decoration: none;
+                transition: 0.3s;
+                transition-property: background, color;
+            }
+
+                .navigation .dropdown-menu a:hover {
+                    background-color: #D9AF32;
+                    color: #fff;
+                }
+
+        .navigation .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+</style>
+
+
+<div class="navigation">
+    <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
+    <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
+    <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
+
+
+    <div class="menu-item dropdown">
+        <a href="#" class="dropdown-toggle">Propose</a>
+        <div class="dropdown-menu">
+            <a asp-area="" asp-page="/Propose" class="menu-item">Parking</a>
+            <a asp-area="" asp-page="/ProposeLocation" class="menu-item">Location</a>
+
+        </div>
+    </div>
+
+    <div class="menu-item dropdown">
+        <a href="#" class="dropdown-toggle">Admin</a>
+        <div class="dropdown-menu">
+            <a asp-area="" asp-page="/BikeRentalLocations/Index" class="dropdown-item ">AdminRentals</a>
+            <a asp-area="" asp-page="/BikeParkings/Index" class="dropdown-item">AdminParkings</a>
+            <a asp-area="" asp-page="/Locations/Index" class="dropdown-item">AdminLocations</a>
+            <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Categories</a>
+            <a asp-area="" asp-page="/Members/Index" class="dropdown-item">Members</a>
+
+            <a asp-area="" asp-page="/ReviewProposals" class="menu-item">ReviewProposals</a>
+        </div>
+    </div>
+    <div class="menu-item">
+        @if (Model.CurrentMember != null && !string.IsNullOrEmpty(Model.CurrentMember.ProfilePicturePath))
+        {
+            <img id="login-btn" class="login-btn" src="@Model.CurrentMember.ProfilePicturePath" alt="Profile Picture" width="40" height="40" style="border-radius: 50%;" />
+        }
+        else
+        {
+            <a id="login-btn" class="login-btn">Login</a>
+        }
+    </div>
+
+
+
+</div>
 <p>
     <a asp-page="Create">Create New</a>
 </p>
@@ -44,6 +142,19 @@
                 @Html.DisplayNameFor(model => model.Location[0].Program)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Location[0].Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location[0].Website)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Location[0].CompanyRegistrationNumber)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Location[0].Latitude)
             </th>
             <th>
@@ -74,6 +185,19 @@
 
                 <td>
                     @Html.DisplayFor(modelItem => item.Program)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Website)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyRegistrationNumber)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Latitude)

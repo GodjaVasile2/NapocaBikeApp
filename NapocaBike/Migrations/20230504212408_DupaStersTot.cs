@@ -4,7 +4,7 @@
 
 namespace NapocaBike.Migrations
 {
-    public partial class Prcare : Migration
+    public partial class DupaStersTot : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,7 +18,9 @@ namespace NapocaBike.Migrations
                     Latitude = table.Column<double>(type: "float", nullable: false),
                     Longitude = table.Column<double>(type: "float", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
-                    SecurityLevel = table.Column<int>(type: "int", nullable: false)
+                    SecurityLevel = table.Column<int>(type: "int", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,21 +28,19 @@ namespace NapocaBike.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BikeRental",
+                name: "BikeRentalLocation",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BikesAvailable = table.Column<int>(type: "int", nullable: false),
                     EmptySpaces = table.Column<int>(type: "int", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false)
+                    BikesAvailable = table.Column<int>(type: "int", nullable: false),
+                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BikeRental", x => x.ID);
+                    table.PrimaryKey("PK_BikeRentalLocation", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,12 +65,35 @@ namespace NapocaBike.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Program = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false)
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Website = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CompanyRegistrationNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Latitude = table.Column<double>(type: "float", nullable: true),
+                    Longitude = table.Column<double>(type: "float", nullable: true),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Location", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Member",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePicturePath = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Member", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,10 +139,13 @@ namespace NapocaBike.Migrations
                 name: "BikeParking");
 
             migrationBuilder.DropTable(
-                name: "BikeRental");
+                name: "BikeRentalLocation");
 
             migrationBuilder.DropTable(
                 name: "LocationCategory");
+
+            migrationBuilder.DropTable(
+                name: "Member");
 
             migrationBuilder.DropTable(
                 name: "Category");
