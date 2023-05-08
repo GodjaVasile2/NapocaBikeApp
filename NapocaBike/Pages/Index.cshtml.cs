@@ -9,17 +9,14 @@ using NapocaBike.Models;
 
 namespace NapocaBike.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly NapocaBikeContext _context;
 
-        public IndexModel(ILogger<IndexModel> logger, UserManager<IdentityUser> userManager, NapocaBikeContext context)
+        public IndexModel(ILogger<IndexModel> logger, UserManager<IdentityUser> userManager, NapocaBikeContext context, RoleManager<IdentityRole> roleManager)
+            : base(userManager, context, roleManager)
         {
             _logger = logger;
-            _userManager = userManager;
-            _context = context;
         }
 
         public Member CurrentMember { get; set; }
@@ -31,7 +28,7 @@ namespace NapocaBike.Pages
             {
                 CurrentMember = await _context.Member.FirstOrDefaultAsync(m => m.Email == user.Email);
             }
-
+            await LoadUserDataAsync();
             return Page();
         }
     }

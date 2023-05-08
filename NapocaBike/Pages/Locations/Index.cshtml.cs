@@ -13,18 +13,14 @@ using Microsoft.AspNetCore.Identity;
 
 namespace NapocaBike.Pages.Locations
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
-        private readonly NapocaBike.Data.NapocaBikeContext _context;
+        private readonly ILogger<IndexModel> _logger;
 
-        private readonly ILogger<BikeParkingsListModel> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
-
-        public IndexModel(ILogger<BikeParkingsListModel> logger, UserManager<IdentityUser> userManager, NapocaBikeContext context)
+        public IndexModel(ILogger<IndexModel> logger, UserManager<IdentityUser> userManager, NapocaBikeContext context, RoleManager<IdentityRole> roleManager)
+            : base(userManager, context, roleManager)
         {
             _logger = logger;
-            _userManager = userManager;
-            _context = context;
         }
         public Member CurrentMember { get; set; }
         public IList<Location> Location { get; set; }
@@ -71,6 +67,7 @@ namespace NapocaBike.Pages.Locations
                 .Where(i => i.ID == id.Value).Single();
                 LocationD.Categories = location.LocationCategories.Select(s => s.Category);
             }
+            await LoadUserDataAsync();
         }
     }
 }

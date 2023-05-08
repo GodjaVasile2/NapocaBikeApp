@@ -4,6 +4,7 @@
     ViewData["Title"] = "Welcome Page";
 }
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,19 +103,23 @@
 
                     </div>
                 </div>
-              
-                <div class="menu-item dropdown">
-                    <a href="#" class="dropdown-toggle">Admin</a>
-                    <div class="dropdown-menu">
-                        <a asp-area="" asp-page="/BikeRentalLocations/Index" class="dropdown-item ">AdminRentals</a>
-                        <a asp-area="" asp-page="/BikeParkings/Index" class="dropdown-item">AdminParkings</a>
-                        <a asp-area="" asp-page="/Locations/Index" class="dropdown-item">AdminLocations</a>
-                        <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Categories</a>
-                        <a asp-area="" asp-page="/Members/Index" class="dropdown-item">Members</a>
-                     
-                        <a asp-area="" asp-page="/ReviewProposals" class="menu-item">ReviewProposals</a>
+                @if (Model.IsAdmin)
+                {
+                    <div class="menu-item dropdown">
+                        <a href="#" class="dropdown-toggle">Admin</a>
+                        <div class="dropdown-menu">
+                            <a asp-area="" asp-page="/BikeRentalLocations/Index" class="dropdown-item ">AdminRentals</a>
+                            <a asp-area="" asp-page="/BikeParkings/Index" class="dropdown-item">AdminParkings</a>
+                            <a asp-area="" asp-page="/Locations/Index" class="dropdown-item">AdminLocations</a>
+                            <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Categories</a>
+                            <a asp-area="" asp-page="/Members/Index" class="dropdown-item">Members</a>
+
+                            <a asp-area="" asp-page="/ReviewProposals" class="menu-item">ReviewProposals</a>
+                        </div>
                     </div>
-                </div>
+                }
+
+                
                 <div class="menu-item">
                     @if (Model.CurrentMember != null && !string.IsNullOrEmpty(Model.CurrentMember.ProfilePicturePath))
                     {

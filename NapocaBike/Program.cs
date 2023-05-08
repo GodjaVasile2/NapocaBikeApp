@@ -27,10 +27,14 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddRazorPages(options =>
 {
-  
-    options.Conventions.AuthorizeFolder("/Locations");
-}
-);
+    options.Conventions.AuthorizePage("/BikeRentalLocations/Index", "AdminPolicy");
+    options.Conventions.AuthorizePage("/BikeParkings/Index", "AdminPolicy");
+    options.Conventions.AuthorizePage("/Locations/Index", "AdminPolicy");
+    options.Conventions.AuthorizePage("/Categories/Index", "AdminPolicy");
+    options.Conventions.AuthorizePage("/Members/Index", "AdminPolicy");
+    options.Conventions.AuthorizePage("/ReviewProposals", "AdminPolicy");
+});
+
 
 
 
