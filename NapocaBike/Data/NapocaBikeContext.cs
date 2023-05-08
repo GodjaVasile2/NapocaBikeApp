@@ -30,8 +30,8 @@ namespace NapocaBike.Data
        
 
         public DbSet<BikeRentalLocation>? BikeRentalLocation { get; set; }
-       
+        public DbSet<NapocaBike.Models.ProposedBikeParking>? ProposedBikeParkings { get; set; }
 
-      
+
     }
 }

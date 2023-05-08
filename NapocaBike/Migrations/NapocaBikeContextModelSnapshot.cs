@@ -60,6 +60,10 @@ namespace NapocaBike.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -76,6 +80,8 @@ namespace NapocaBike.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("BikeParking");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("BikeParking");
                 });
 
             modelBuilder.Entity("NapocaBike.Models.Category", b =>
@@ -107,19 +113,35 @@ namespace NapocaBike.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("Latitude")
+                    b.Property<string>("CompanyRegistrationNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<double?>("Latitude")
                         .HasColumnType("float");
 
                     b.Property<double?>("Longitude")
-                        .IsRequired()
                         .HasColumnType("float");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Program")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Website")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -181,6 +203,16 @@ namespace NapocaBike.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Member");
+                });
+
+            modelBuilder.Entity("NapocaBike.Models.ProposedBikeParking", b =>
+                {
+                    b.HasBaseType("NapocaBike.Models.BikeParking");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.HasDiscriminator().HasValue("ProposedBikeParking");
                 });
 
             modelBuilder.Entity("NapocaBike.Models.LocationCategory", b =>

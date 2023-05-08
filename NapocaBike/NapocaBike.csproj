@@ -22,7 +22,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\LibraryIdentity\" />
     <Folder Include="wwwroot\images\profile-pictures\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Locations\Create.cshtml" />
+    <None Include="Pages\Locations\Delete.cshtml" />
+    <None Include="Pages\Locations\Details.cshtml" />
+    <None Include="Pages\Locations\Edit.cshtml" />
+    <None Include="Pages\Locations\Index.cshtml" />
   </ItemGroup>
 
 </Project>

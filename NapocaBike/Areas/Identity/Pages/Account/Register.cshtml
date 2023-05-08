@@ -4,11 +4,11 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 style="text-align: center; color: #226A80; font-size: 55px; text-transform: uppercase; font-weight: 800; letter-spacing: 2px; line-height: 60px; margin-bottom: 30px;">@ViewData["Title"]</h1>
 
-<div class="row">
+<div class="row" style="display: flex; justify-content: center;">
     <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" style="background-color: #f8f9fa; padding: 20px; border-radius: 5px;">
             <h2>Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -27,7 +27,7 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary" style="margin-top: 10px; background-color: #D9AF32; transition: 0.3s;">Register</button>
         </form>
     </div>
     <div class="col-md-6 col-md-offset-2">
@@ -51,7 +51,7 @@
                             <p>
                                 @foreach (var provider in Model.ExternalLogins!)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" style="background-color: #D9AF32; transition: 0.3s;">@provider.DisplayName</button>
                                 }
                             </p>
                         </div>

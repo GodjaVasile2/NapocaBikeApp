@@ -1,0 +1,80 @@
+﻿@page
+@model NapocaBike.Pages.BikeParkings.Propose.ProposeModel
+@{
+    ViewData["Title"] = "Propose";
+}
+
+<h1>Propose a Bike Parking</h1>
+
+<h4>ProposedBikeParking</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProposedBikeParking.Name" class="control-label"></label>
+                <input asp-for="ProposedBikeParking.Name" class="form-control" />
+                <span asp-validation-for="ProposedBikeParking.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProposedBikeParking.Latitude" class="control-label"></label>
+                <input asp-for="ProposedBikeParking.Latitude" id="Latitude" class="form-control" />
+                <span asp-validation-for="ProposedBikeParking.Latitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProposedBikeParking.Longitude" class="control-label"></label>
+                <input asp-for="ProposedBikeParking.Longitude" id="Longitude" class="form-control" />
+                <span asp-validation-for="ProposedBikeParking.Longitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProposedBikeParking.Capacity" class="control-label"></label>
+                <input asp-for="ProposedBikeParking.Capacity" class="form-control" />
+                <span asp-validation-for="ProposedBikeParking.Capacity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProposedBikeParking.SecurityLevel" class="control-label"></label>
+                <input asp-for="ProposedBikeParking.SecurityLevel" class="form-control" />
+                <span asp-validation-for="ProposedBikeParking.SecurityLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Propose" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-8">
+        <div id="map" style="height: 400px;"></div>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 46.770439, lng: 23.591423 },
+                zoom: 10,
+            });
+            var marker = new google.maps.Marker({
+                position: { lat: 46.770439, lng: 23.591423 },
+                map: map,
+                draggable: true,
+            });
+            marker.addListener("dragend", function () {
+                var lat = marker.getPosition().lat();
+                var lng = marker.getPosition().lng();
+                document.getElementById("Latitude").value = lat;
+                document.getElementById("Longitude").value = lng;
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzHZqkegdjz_xvNtEuYReEdgrPi1PFmbk&callback=initMap&v=weekly" async defer></script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

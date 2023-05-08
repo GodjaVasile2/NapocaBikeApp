@@ -12,15 +12,26 @@ namespace NapocaBike.Models
 
         public string Program { get; set; }
 
+        [Required(ErrorMessage = "The phone field is required.")]
+        public string? Phone { get; set; }
 
-        [Required(ErrorMessage = "Latitude is required")]
-        [Range(-90, 90, ErrorMessage = "Latitude must be between -90 and 90")]
+        [Required(ErrorMessage = "The email field is required.")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        public string? Email { get; set; }
+
+        [Required(ErrorMessage = "The website field is required.")]
+        [Url(ErrorMessage = "Invalid Website Address")]
+        public string? Website { get; set; }
+
+        [Display(Name = "Company Registration Number")]
+        public string? CompanyRegistrationNumber { get; set; }
+
         public double? Latitude { get; set; }
 
-        [Required(ErrorMessage = "Longitude is required")]
-        [Range(-180, 180, ErrorMessage = "Longitude must be between -180 and 180")]
+  
         public double? Longitude { get; set; }
 
+        public bool IsApproved { get; set; }
 
         public ICollection<LocationCategory>? LocationCategories { get; set; }
     }

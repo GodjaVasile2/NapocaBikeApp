@@ -37,16 +37,18 @@ namespace NapocaBike.Pages.BikeParkings
 
         public async Task OnGetAsync()
         {
-
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
                 CurrentMember = await _context.Member.FirstOrDefaultAsync(m => m.Email == user.Email);
             }
 
-
-
             IQueryable<BikeParking> bikeParkingsQuery = _context.BikeParking;
+            IQueryable<ProposedBikeParking> proposedBikeParkingsQuery = _context.ProposedBikeParkings.Where(p => p.IsApproved);
+
+            bikeParkingsQuery = from bp in bikeParkingsQuery
+                                join pbp in proposedBikeParkingsQuery on bp.ID equals pbp.ID
+                                select bp;
 
             if (CapacityFilter > 0 && SecurityFilter > 0)
             {
@@ -63,8 +65,6 @@ namespace NapocaBike.Pages.BikeParkings
 
             BikeParking = await bikeParkingsQuery.ToListAsync();
         }
-
-
 
     }
 }
