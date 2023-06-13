@@ -8,6 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\BikeParkings\Details.cshtml.cs" />
+    <Compile Remove="Pages\BikeRentalLocations\Details.cshtml.cs" />
+    <Compile Remove="Pages\Categories\Details.cshtml.cs" />
+    <Compile Remove="Pages\Locations\Details.cshtml.cs" />
+    <Compile Remove="Pages\Members\Details.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\BikeParkings\Details.cshtml" />
+    <Content Remove="Pages\BikeRentalLocations\Details.cshtml" />
+    <Content Remove="Pages\Categories\Details.cshtml" />
+    <Content Remove="Pages\Locations\Details.cshtml" />
+    <Content Remove="Pages\Members\Details.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.15" />
@@ -29,7 +45,6 @@
   <ItemGroup>
     <None Include="Pages\Locations\Create.cshtml" />
     <None Include="Pages\Locations\Delete.cshtml" />
-    <None Include="Pages\Locations\Details.cshtml" />
     <None Include="Pages\Locations\Edit.cshtml" />
     <None Include="Pages\Locations\Index.cshtml" />
   </ItemGroup>
