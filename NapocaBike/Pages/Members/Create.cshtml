@@ -4,14 +4,106 @@
 @{
     ViewData["Title"] = "Create";
 }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+   <style>
+        body {
+            background-color: #fff;
+            padding: 20px;
+        }
 
-<h1>Create</h1>
+                h1 {
+                    color: #4a4e69; /* Change the color here */
+                    text-align: center; /* Align text to center */
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 700;
+                }
 
-<h4>Member</h4>
+        .row {
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        .col-md-4 {
+            flex: 0 0 33.33%;
+            max-width: 33.33%;
+        }
+
+        .control-label {
+            display: block;
+            color: #4a4e69;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #4a4e69;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #4a4e69;
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #4a4e69;
+            border: none;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #D9AF32;
+        }
+
+        .text-danger {
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #C28E1E;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            color: #D9AF32;
+        }
+
+                .btn-secondary {
+                    color: #fff;
+                    background-color: #D9AF32;
+                    border: none;
+                    padding: 10px 20px;
+                    text-transform: uppercase;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    margin-top: 20px;
+                }
+
+                    .btn-secondary:hover {
+                        background-color: #C28E1E;
+                    }
+
+
+   </style>
+</head>
+<body>
+    <h1>Create New Member Profile</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Member.FirstName" class="control-label"></label>
@@ -39,7 +131,14 @@
                 <span asp-validation-for="Member.Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Member.ProfilePicturePath" class="control-label"></label>
+                <input asp-for="Member.ProfilePicturePath" type="file" class="form-control" />
+                <span asp-validation-for="Member.ProfilePicturePath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                    <a asp-page="Index" class="btn btn-secondary">Back to List</a>
+
             </div>
         </form>
     </div>
@@ -50,5 +149,8 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+</body>

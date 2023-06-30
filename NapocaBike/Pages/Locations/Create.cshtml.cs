@@ -54,6 +54,10 @@ namespace NapocaBike.Pages.Locations
                 {
                     newLocation.IsApproved = false;
                 }
+                else
+                {
+                    newLocation.IsApproved = true;
+                }
             }
             if (selectedCategories != null)
             {

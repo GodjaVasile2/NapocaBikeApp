@@ -138,6 +138,12 @@
             display: inline-block;
         }
 
+        #map {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.1);
+        }
+
     </style>
 </head>
 
@@ -152,7 +158,14 @@
                 <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
                 <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
                 <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
-                <a asp-area="" asp-page="/Propose" class="menu-item">Propose</a>
+                <div class="menu-item dropdown">
+                    <a href="#" class="dropdown-toggle">Propose</a>
+                    <div class="dropdown-menu">
+                        <a asp-area="" asp-page="/Propose" class="menu-item">Parking</a>
+                        <a asp-area="" asp-page="/ProposeLocation" class="menu-item">Location</a>
+
+                    </div>
+                </div>
                 @if (Model.IsAdmin)
                 {
                     <div class="menu-item dropdown">
@@ -196,7 +209,7 @@
             </div>
         </div>
 
-         <div id="map" style="height:600px;"></div>
+        <div id="map" style="height:600px; margin-top:20px;"></div>
            
       
     </section>

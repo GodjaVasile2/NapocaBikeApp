@@ -133,6 +133,11 @@
                 border-radius: 5px;
             }
 
+        #map {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.1);
+        }
 
 
 
@@ -152,7 +157,14 @@
                 <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
                 <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
                 <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
-                <a asp-area="" asp-page="/Propose" class="menu-item">Propose</a>
+                <div class="menu-item dropdown">
+                    <a href="#" class="dropdown-toggle">Propose</a>
+                    <div class="dropdown-menu">
+                        <a asp-area="" asp-page="/Propose" class="menu-item">Parking</a>
+                        <a asp-area="" asp-page="/ProposeLocation" class="menu-item">Location</a>
+
+                    </div>
+                </div>
 
 
                 @if (Model.IsAdmin)
@@ -202,7 +214,7 @@
 
         <div style="position: relative;">
             <div id="map" style="height:600px; margin-top:20px;"></div>
-            <button class="filter-btn" style="position: absolute; bottom: 10px; left: 10px;"><i class="fas fa-filter"></i></button>
+            <button class="filter-btn" style="position: absolute; top: 25px; left: 10px;"><i class="fas fa-filter"></i></button>
             <div id="filter-form" >
                 <form method="get">
                     <div class="form-group">
@@ -214,7 +226,7 @@
                         <input type="number" id="security-filter" name="SecurityFilter" class="form-control" value="@Model.SecurityFilter" />
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary" asp-page-handler="filter">Filter</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: #C28E1E;" asp-page-handler="filter">Filter</button>
                         <a asp-page="/BikeParkingsList" class="btn btn-secondary ml-2">Clear</a>
                     </div>
                 </form>
@@ -223,25 +235,12 @@
 
 
 
-        <h2>Security Levels</h2>
-        <div class="grid-container">
-            <div class="grid-item">
-                <img src="~/Icons/SimpleBikeRacks.jpg" alt="Level 1">
-                <p>Level 1: Basic security - simple bike racks, minimal surveillance</p>
-            </div>
-            <div class="grid-item">
-                <img src="~/Icons/Moderate.jpg" alt="Level 2">
-                <p>Level 2: Moderate security - secure bike racks, some surveillance</p>
-            </div>
-            <div class="grid-item">
-                <img src="~/Icons/High.jpg" alt="Level 3">
-                <p>Level 3: High security - locked bike rooms, cameras, and/or on-site staff</p>
-            </div>
-            <div class="grid-item">
-                <img src="~/Icons/VeryHigh.jpg" alt="Level 4">
-                <p>Level 4: Very high security - card access control, individual bike lockers</p>
-            </div>
-        </div>
+        <h1 style="color: #C28E1E;">Security Levels</h1>
+        <div>
+            <img src="~/images/level.png" alt="Presentation of Security Levels">
+        </div>   
+                           
+        
      </section>    
 </body>
 </html>

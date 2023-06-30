@@ -1,75 +1,84 @@
 ﻿@page
 @model NapocaBike.Pages.Members.IndexModel
-
 @{
     ViewData["Title"] = "Index";
 }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/member.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Members Management</h1>
 
-<h1>Index</h1>
+        <a class="create-button" asp-page="Create">Create New Member</a>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Member[0].FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Member[0].LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Member[0].Adress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Member[0].Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Member[0].Phone)
-            </th>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.Member[0].ProfilePicturePath)
-            </th>
-            <th></th>
+        <table>
+            <thead>
+                <tr>
+                    <th>Profile Picture</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Member)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ProfilePicturePath))
+                            {
+                                <img src="@item.ProfilePicturePath" alt="Profile Picture" width="100" height="100" onclick="openModal(this)" />
+                            }
+                            else
+                            {
+                                <p>No image</p>
+                            }
 
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Member) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Adress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-                <td>
-                    @if (!string.IsNullOrEmpty(item.ProfilePicturePath))
-                    {
-                        <img src="@item.ProfilePicturePath" alt="Profile Picture" width="100" height="100" />
-                    }
-                    else
-                    {
-                        <p>No image</p>
-                    }
-                </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Adress)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                        
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+
+                            <a asp-page="./Block" asp-route-id="@item.ID">Block</a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="img01">
+            <div id="caption"></div>
+        </div>
+
+    </div>
+    <script>
+        function openModal(img) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("img01");
+
+            modal.style.display = "block";
+            modalImg.src = img.src;
+
+            var span = document.getElementsByClassName("close")[0];
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>

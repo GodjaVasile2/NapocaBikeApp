@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NapocaBike.Data;
 
@@ -11,9 +12,10 @@ using NapocaBike.Data;
 namespace NapocaBike.Migrations
 {
     [DbContext(typeof(NapocaBikeContext))]
-    partial class NapocaBikeContextModelSnapshot : ModelSnapshot
+    [Migration("20230613183430_AdaugareReview")]
+    partial class AdaugareReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,6 +62,10 @@ namespace NapocaBike.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -76,6 +82,8 @@ namespace NapocaBike.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("BikeParking");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("BikeParking");
                 });
 
             modelBuilder.Entity("NapocaBike.Models.Category", b =>
@@ -199,39 +207,6 @@ namespace NapocaBike.Migrations
                     b.ToTable("Member");
                 });
 
-            modelBuilder.Entity("NapocaBike.Models.ProposedBikeParking", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("SecurityLevel")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("ProposedBikeParkings");
-                });
-
             modelBuilder.Entity("NapocaBike.Models.Review", b =>
                 {
                     b.Property<int>("ID")
@@ -246,10 +221,6 @@ namespace NapocaBike.Migrations
                     b.Property<int>("MemberID")
                         .HasColumnType("int");
 
-                    b.Property<string>("MemberName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -261,6 +232,16 @@ namespace NapocaBike.Migrations
                     b.HasIndex("MemberID");
 
                     b.ToTable("Review");
+                });
+
+            modelBuilder.Entity("NapocaBike.Models.ProposedBikeParking", b =>
+                {
+                    b.HasBaseType("NapocaBike.Models.BikeParking");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.HasDiscriminator().HasValue("ProposedBikeParking");
                 });
 
             modelBuilder.Entity("NapocaBike.Models.LocationCategory", b =>

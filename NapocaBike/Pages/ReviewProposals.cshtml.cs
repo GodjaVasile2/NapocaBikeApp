@@ -39,20 +39,23 @@ namespace NapocaBike.Pages.BikeParkings.ReviewProposals
 
             if (proposedBikeParking != null)
             {
-                proposedBikeParking.IsApproved = true;
                 _context.BikeParking.Add(new BikeParking
                 {
+                
                     Name = proposedBikeParking.Name,
                     Latitude = proposedBikeParking.Latitude,
                     Longitude = proposedBikeParking.Longitude,
                     Capacity = proposedBikeParking.Capacity,
                     SecurityLevel = proposedBikeParking.SecurityLevel
                 });
+
+                _context.ProposedBikeParkings.Remove(proposedBikeParking);
                 await _context.SaveChangesAsync();
             }
 
             return RedirectToPage();
         }
+
 
         public async Task<IActionResult> OnPostRejectAsync(int id)
         {
