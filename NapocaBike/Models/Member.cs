@@ -21,6 +21,7 @@ namespace NapocaBike.Models
         }
         public string? ProfilePicturePath { get; set; }
         public ICollection<Review> Reviews { get; set; }
+       
 
     }
 }

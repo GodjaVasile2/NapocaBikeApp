@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Remove="Pages\BikeParkings\Details.cshtml.cs" />
+    <Compile Remove="Pages\BikeRentalLocations\Create.cshtml.cs" />
     <Compile Remove="Pages\BikeRentalLocations\Details.cshtml.cs" />
     <Compile Remove="Pages\Categories\Details.cshtml.cs" />
     <Compile Remove="Pages\Locations\Details.cshtml.cs" />
@@ -17,6 +18,7 @@
 
   <ItemGroup>
     <Content Remove="Pages\BikeParkings\Details.cshtml" />
+    <Content Remove="Pages\BikeRentalLocations\Create.cshtml" />
     <Content Remove="Pages\BikeRentalLocations\Details.cshtml" />
     <Content Remove="Pages\Categories\Details.cshtml" />
     <Content Remove="Pages\Locations\Details.cshtml" />

@@ -5,10 +5,15 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Bike Rentals</title>
+    <link rel="stylesheet" href="~/css/crudStyle.css">
+</head>
 
-<h1>Edit</h1>
 
-<h4>BikeRentalLocation</h4>
+<h1>Edit Bike Rental Location</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -43,7 +48,7 @@
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="Index" class="btn btn-primary">Back to List</a>
 </div>
 
 @section Scripts {

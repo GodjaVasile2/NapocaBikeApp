@@ -24,7 +24,7 @@ namespace NapocaBike.Pages.BikeRentalLocations
         }
         public Member CurrentMember { get; set; }
         public IList<BikeRentalLocation> BikeRentalLocation { get; set; } = default!;
-        //public IList<Location> Locations { get; set; } = default!; // Add this line
+        
 
         public async Task OnGetAsync()
         {
@@ -39,10 +39,7 @@ namespace NapocaBike.Pages.BikeRentalLocations
             {
                 BikeRentalLocation = await _context.BikeRentalLocation.ToListAsync();
             }
-            //if (_context.Location != null) // Add this block
-            //{
-            //    Locations = await _context.Location.ToListAsync();
-            //}
+           
             await LoadUserDataAsync();
         }
 
@@ -68,10 +65,22 @@ namespace NapocaBike.Pages.BikeRentalLocations
 
             foreach (var bikeRentalLocation in bikeRentalLocations)
             {
-                _context.BikeRentalLocation.Add(bikeRentalLocation);
-            }
+                
+                int startIndex = bikeRentalLocation.Adress.IndexOf("(");
+                int endIndex = bikeRentalLocation.Adress.LastIndexOf(")");
 
+                if (startIndex != -1 && endIndex != -1)
+                {
+                    bikeRentalLocation.Adress = bikeRentalLocation.Adress.Remove(endIndex, 1).Remove(startIndex, 1).Trim();
+                }
+
+                if (!_context.BikeRentalLocation.Any(x => x.Name == bikeRentalLocation.Name && x.Adress == bikeRentalLocation.Adress))
+                {
+                    _context.BikeRentalLocation.Add(bikeRentalLocation);
+                }
+            }
             await _context.SaveChangesAsync();
+
         }
     }
 }

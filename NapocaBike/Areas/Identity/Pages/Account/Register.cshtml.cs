@@ -103,6 +103,7 @@ namespace NapocaBike.Areas.Identity.Pages.Account
             var result = await _userManager.CreateAsync(user, Input.Password);
 
             Member.Email = Input.Email;
+            
             _context.Member.Add(Member);
             await _context.SaveChangesAsync();
 
