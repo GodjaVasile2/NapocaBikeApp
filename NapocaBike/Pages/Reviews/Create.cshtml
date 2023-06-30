@@ -15,23 +15,6 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Display only fields for Member ID and Member Name -->
-            <div class="form-group">
-                <label for="memberId">Member ID:</label>
-                <input id="memberId" class="form-control" value="@Model.Review.MemberID" disabled />
-            </div>
-
-            <div class="form-group">
-                <label for="memberName">Member Name:</label>
-                <input id="memberName" class="form-control" value="@Model.Review.MemberName" disabled />
-            </div>
-
-            <!-- Display only field for Location ID -->
-            <div class="form-group">
-                <label for="locationId">Location ID:</label>
-                <input id="locationId" class="form-control" value="@Model.Review.LocationID" disabled />
-            </div>
-
             <!-- Hidden input field for LocationID -->
             <input type="hidden" asp-for="Review.LocationID" />
 

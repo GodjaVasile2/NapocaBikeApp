@@ -91,7 +91,7 @@
             font-size: 24px;
             cursor: pointer;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 9999;
+            z-index: 999;
             transition: all 0.3s ease-in-out;
         }
 
@@ -140,6 +140,56 @@
         }
 
 
+        .button {
+            padding: 10px 20px;
+            background-color: #C28E1E; /* same as other buttons on the page */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .button:hover {
+                background-color: #D9AF32;
+                transform: scale(1.1);
+            }
+
+        .modal-content {
+            background-color: #f9f9f9; /* light grey */
+            border: 1px solid #C28E1E; /* gold */
+            border-radius: 10px;
+        }
+
+            .modal-content h2 {
+                color: #C28E1E; /* gold */
+            }
+
+            .modal-content p {
+                color: #333; /* dark grey */
+            }
+
+        #closeModal {
+            color: #C28E1E; /* gold */
+        }
+
+            #closeModal:hover,
+            #closeModal:focus {
+                color: #D9AF32;
+                text-decoration: none;
+            }
+
+        .level img {
+            border: 1px solid #C28E1E; /* gold */
+            border-radius: 5px;
+        }
+
+        .level span {
+            font-weight: bold;
+            color: #333; /* dark grey */
+            margin-right: 10px;
+        }
 
 
 
@@ -232,16 +282,40 @@
                 </form>
             </div>
         </div>
+        <button id="openModal" class="button">Learn about Security Levels</button>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span id="closeModal">&times;</span>
+                <h2>Security Levels</h2>
+                <div class="level level-right">
+                    <img src="~/images/11.svg" alt="Level 1">
+                    <span>Level 1: </span><p>Basic and most common type of bike parking. Usually, a metal bar is used to secure the bike's frame. Provides minimal security and best used for short-term parking in visible, high-traffic areas.</p>
+                </div>
+                <div class="level level-left">
+                    <img src="~/images/22.svg" alt="Level 2">
+                    <span>Level 2: </span><p>These are bike racks provided by private businesses, such as malls, offices, and restaurants for their customers and employees. </p>
+                </div>
+                <div class="level level-right">
+                    <img src="~/images/33.svg" alt="Level 3">
+                    <span>Level 3: </span><p>This setup includes private bike racks supplemented with surveillance cameras. The bike racks provide secure, personal parking while the presence of cameras adds an extra layer of security, deterring potential theft and allowing for monitoring and recording activity around the bike parking area. </p>
+                </div>
+                <div class="level level-left">
+                    <img src="~/images/44.svg" alt="Level 4">
+                    <span>Level 4: </span><p>These are high-security bike parking facilities where access is controlled by electronic card readers or keypads. Only authorized users such as residents, employees, or registered members can park their bikes in these facilities</p>
+                </div>
+                <div class="level level-right">
+                    <img src="~/images/55.svg" alt="Level 5">
+                    <span>Level 5: </span><p>This level of bike security involves controlled access systems, like card readers, paired with active security monitoring. This might involve security personnel or advanced surveillance systems. This level provides high-security bike parking and is suitable for valuable bikes and long-term parking in commercial and residential buildings.</p>
+                </div>
+            </div>
+        </div>
 
 
 
-        <h1 style="color: #C28E1E;">Security Levels</h1>
-        <div>
-            <img src="~/images/level.png" alt="Presentation of Security Levels">
-        </div>   
-                           
-        
-     </section>    
+
+
+    </section>    
 </body>
 </html>
 
@@ -250,39 +324,51 @@
 @section Scripts {
         <script>
 
-
-            // Get the filter button and filter form
             const filterBtn = document.querySelector('.filter-btn');
             const filterForm = document.querySelector('#filter-form');
-
-            // Toggle the display of the filter form when the filter button is clicked
             filterBtn.addEventListener('click', () => {
                 filterForm.classList.toggle('show');
             });
-
-
-
-
-            // Get the modal
             var modal = document.getElementById("login-modal");
-
-            // Get the button that opens the modal
             var btn = document.getElementById("login-btn");
 
-            // When the user clicks the button, open the modal
             btn.onclick = function () {
                 modal.style.display = "block";
             };
-
-            // When the user clicks anywhere outside of the modal, close it
             window.onclick = function (event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
             };
 
-            </script>
-        <script>
+        // Get the modal
+        var modal = document.getElementById("modal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("openModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementById("closeModal");
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+
+
             var map;
             var currentLocationMarker;
             let markers = [];
