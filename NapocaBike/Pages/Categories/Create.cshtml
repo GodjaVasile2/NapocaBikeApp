@@ -6,12 +6,79 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        <style >
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFFFFF;
+            color: #333;
+        }
 
-<h4>Category</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #FF6347;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #FF6347;
+            color: #fff;
+        }
+
+        a {
+            color: #FF6347;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+            a:hover {
+                color: #FFA07A;
+            }
+
+        .btn-create {
+            display: inline-block;
+            background-color: #FF6347;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+            .btn-create:hover {
+                background-color: #FFA07A;
+            }
+
+    </style>
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Create New Category</h1>
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -23,13 +90,12 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        <a asp-page="Index" class="btn btn-secondary">Back to List</a>
     </div>
-</div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>

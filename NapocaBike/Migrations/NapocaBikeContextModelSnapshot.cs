@@ -17,7 +17,7 @@ namespace NapocaBike.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.15")
+                .HasAnnotation("ProductVersion", "6.0.18")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -60,10 +60,6 @@ namespace NapocaBike.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -80,8 +76,6 @@ namespace NapocaBike.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("BikeParking");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("BikeParking");
                 });
 
             modelBuilder.Entity("NapocaBike.Models.Category", b =>
@@ -207,12 +201,65 @@ namespace NapocaBike.Migrations
 
             modelBuilder.Entity("NapocaBike.Models.ProposedBikeParking", b =>
                 {
-                    b.HasBaseType("NapocaBike.Models.BikeParking");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
 
-                    b.HasDiscriminator().HasValue("ProposedBikeParking");
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("SecurityLevel")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ProposedBikeParkings");
+                });
+
+            modelBuilder.Entity("NapocaBike.Models.Review", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LocationID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemberID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LocationID");
+
+                    b.HasIndex("MemberID");
+
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("NapocaBike.Models.LocationCategory", b =>
@@ -232,6 +279,25 @@ namespace NapocaBike.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("NapocaBike.Models.Review", b =>
+                {
+                    b.HasOne("NapocaBike.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NapocaBike.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("NapocaBike.Models.Category", b =>

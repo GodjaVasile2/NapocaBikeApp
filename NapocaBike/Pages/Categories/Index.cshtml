@@ -6,121 +6,96 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-<style>
-    .navigation {
-        display: flex;
-        align-items: center;
-    }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
-        .navigation .menu-item {
-            position: relative;
-            color: #000;
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #4a4e69;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4a4e69;
+            color: #fff;
+        }
+
+        a {
+            color: #C28E1E;
             text-decoration: none;
             font-weight: 600;
-            letter-spacing: 1px;
-            padding: 2px 15px;
-            margin-right: 30px;
-            transition: 0.3s;
-            transition-property: background;
         }
 
-            .navigation .menu-item:hover {
-                background: #D9AF32;
-                color: #fff;
+            a:hover {
+                color: #D9AF32;
             }
 
-        .navigation .dropdown {
-            position: relative;
-        }
-
-        .navigation .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #fff;
-            padding: 10px 0;
+        .btn-create {
+            display: inline-block;
+            background-color: #4a4e69;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            margin-bottom: 1rem;
+            text-align: center;
         }
 
-            .navigation .dropdown-menu a {
-                display: block;
-                padding: 5px 20px;
-                color: #000;
-                text-decoration: none;
-                transition: 0.3s;
-                transition-property: background, color;
+            .btn-create:hover {
+                background-color: #D9AF32;
             }
 
-                .navigation .dropdown-menu a:hover {
-                    background-color: #D9AF32;
-                    color: #fff;
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Locations Categories</h1>
+        <a asp-page="Create" class="btn-create">Create New</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Category[0].CategoryName)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Category)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                            <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                        </td>
+                    </tr>
                 }
-
-        .navigation .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-</style>
-
-
-<div class="navigation">
-    <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
-    <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
-    <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
-
-
-    <div class="menu-item dropdown">
-        <a href="#" class="dropdown-toggle">Propose</a>
-        <div class="dropdown-menu">
-            <a asp-area="" asp-page="/Propose" class="menu-item">Parking</a>
-            <a asp-area="" asp-page="/ProposeLocation" class="menu-item">Location</a>
-
-        </div>
+            </tbody>
+        </table>
     </div>
-
-    <div class="menu-item dropdown">
-        <a href="#" class="dropdown-toggle">Admin</a>
-        <div class="dropdown-menu">
-            <a asp-area="" asp-page="/BikeRentalLocations/Index" class="dropdown-item ">AdminRentals</a>
-            <a asp-area="" asp-page="/BikeParkings/Index" class="dropdown-item">AdminParkings</a>
-            <a asp-area="" asp-page="/Locations/Index" class="dropdown-item">AdminLocations</a>
-            <a asp-area="" asp-page="/Categories/Index" class="dropdown-item">Categories</a>
-            <a asp-area="" asp-page="/Members/Index" class="dropdown-item">Members</a>
-
-            <a asp-area="" asp-page="/ReviewProposals" class="menu-item">ReviewProposals</a>
-        </div>
-    </div>
-   
-
-
-
-</div>
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Category[0].CategoryName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Category) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+</body>

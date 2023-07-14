@@ -40,30 +40,28 @@ namespace NapocaBike.Pages.BikeParkings
                 CurrentMember = await _context.Member.FirstOrDefaultAsync(m => m.Email == user.Email);
             }
 
-            IQueryable<BikeParking> bikeParkingsQuery = _context.BikeParking;
-            IQueryable<ProposedBikeParking> proposedBikeParkingsQuery = _context.ProposedBikeParkings.Where(p => p.IsApproved);
+            BikeParking = await _context.BikeParking.ToListAsync();
 
-            bikeParkingsQuery = from bp in bikeParkingsQuery
-                                join pbp in proposedBikeParkingsQuery on bp.ID equals pbp.ID
-                                select bp;
-
+            
             if (CapacityFilter > 0 && SecurityFilter > 0)
             {
-                bikeParkingsQuery = bikeParkingsQuery.Where(bp => bp.Capacity >= CapacityFilter && bp.SecurityLevel >= SecurityFilter);
+                BikeParking = BikeParking.Where(bp => bp.Capacity >= CapacityFilter && bp.SecurityLevel >= SecurityFilter).ToList();
             }
             else if (CapacityFilter > 0)
             {
-                bikeParkingsQuery = bikeParkingsQuery.Where(bp => bp.Capacity >= CapacityFilter);
+                BikeParking = BikeParking.Where(bp => bp.Capacity >= CapacityFilter).ToList();
             }
             else if (SecurityFilter > 0)
             {
-                bikeParkingsQuery = bikeParkingsQuery.Where(bp => bp.SecurityLevel >= SecurityFilter);
+                BikeParking = BikeParking.Where(bp => bp.SecurityLevel >= SecurityFilter).ToList();
             }
-
-            BikeParking = await bikeParkingsQuery.ToListAsync();
 
             await LoadUserDataAsync();
         }
+
+
+
+
 
     }
 }

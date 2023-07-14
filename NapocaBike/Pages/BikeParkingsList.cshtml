@@ -55,6 +55,7 @@
             margin-left: auto;
             padding-left: 30px;
         }
+
         /* Login Modal */
         .login-btn {
             cursor: pointer;
@@ -74,7 +75,7 @@
 
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto;
+            margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
@@ -91,7 +92,7 @@
             font-size: 24px;
             cursor: pointer;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 9999;
+            z-index: 999;
             transition: all 0.3s ease-in-out;
         }
 
@@ -133,8 +134,63 @@
                 border-radius: 5px;
             }
 
+        #map {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.1);
+        }
 
 
+        .button {
+            padding: 10px 20px;
+            background-color: #C28E1E; 
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .button:hover {
+                background-color: #D9AF32;
+                transform: scale(1.1);
+            }
+
+        .modal-content {
+            background-color: #f9f9f9; 
+            border: 1px solid #C28E1E; 
+            border-radius: 10px;
+        }
+
+            .modal-content h2 {
+                color: #C28E1E; 
+            }
+
+            .modal-content p {
+                color: #333; 
+            }
+
+        #closeModal {
+            color: #C28E1E; 
+        }
+
+            #closeModal:hover,
+            #closeModal:focus {
+                color: #D9AF32;
+                text-decoration: none;
+            }
+
+        .level img {
+            border: 1px solid #C28E1E; 
+            border-radius: 5px;
+        }
+
+        .level span {
+            font-weight: bold;
+            color: #333; 
+            margin-right: 10px;
+        }
 
 
 
@@ -152,7 +208,14 @@
                 <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
                 <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
                 <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
-                <a asp-area="" asp-page="/Propose" class="menu-item">Propose</a>
+                <div class="menu-item dropdown">
+                    <a href="#" class="dropdown-toggle">Propose</a>
+                    <div class="dropdown-menu">
+                        <a asp-area="" asp-page="/Propose" class="menu-item">Parking</a>
+                        <a asp-area="" asp-page="/ProposeLocation" class="menu-item">Location</a>
+
+                    </div>
+                </div>
 
 
                 @if (Model.IsAdmin)
@@ -202,7 +265,7 @@
 
         <div style="position: relative;">
             <div id="map" style="height:600px; margin-top:20px;"></div>
-            <button class="filter-btn" style="position: absolute; bottom: 10px; left: 10px;"><i class="fas fa-filter"></i></button>
+            <button class="filter-btn" style="position: absolute; top: 25px; left: 10px;"><i class="fas fa-filter"></i></button>
             <div id="filter-form" >
                 <form method="get">
                     <div class="form-group">
@@ -214,35 +277,46 @@
                         <input type="number" id="security-filter" name="SecurityFilter" class="form-control" value="@Model.SecurityFilter" />
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary" asp-page-handler="filter">Filter</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: #C28E1E;" asp-page-handler="filter">Filter</button>
                         <a asp-page="/BikeParkingsList" class="btn btn-secondary ml-2">Clear</a>
                     </div>
                 </form>
             </div>
         </div>
+        <button id="openModal" class="button">Learn about Security Levels</button>
 
-
-
-        <h2>Security Levels</h2>
-        <div class="grid-container">
-            <div class="grid-item">
-                <img src="~/Icons/SimpleBikeRacks.jpg" alt="Level 1">
-                <p>Level 1: Basic security - simple bike racks, minimal surveillance</p>
-            </div>
-            <div class="grid-item">
-                <img src="~/Icons/Moderate.jpg" alt="Level 2">
-                <p>Level 2: Moderate security - secure bike racks, some surveillance</p>
-            </div>
-            <div class="grid-item">
-                <img src="~/Icons/High.jpg" alt="Level 3">
-                <p>Level 3: High security - locked bike rooms, cameras, and/or on-site staff</p>
-            </div>
-            <div class="grid-item">
-                <img src="~/Icons/VeryHigh.jpg" alt="Level 4">
-                <p>Level 4: Very high security - card access control, individual bike lockers</p>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span id="closeModal">&times;</span>
+                <h2>Security Levels</h2>
+                <div class="level level-right">
+                    <img src="~/images/11.svg" alt="Level 1">
+                    <span>Level 1: </span><p>Basic and most common type of bike parking. Usually, a metal bar is used to secure the bike's frame. Provides minimal security and best used for short-term parking in visible, high-traffic areas.</p>
+                </div>
+                <div class="level level-left">
+                    <img src="~/images/22.svg" alt="Level 2">
+                    <span>Level 2: </span><p>These are bike racks provided by private businesses, such as malls, offices, and restaurants for their customers and employees. </p>
+                </div>
+                <div class="level level-right">
+                    <img src="~/images/33.svg" alt="Level 3">
+                    <span>Level 3: </span><p>This setup includes private bike racks supplemented with surveillance cameras. The bike racks provide secure, personal parking while the presence of cameras adds an extra layer of security, deterring potential theft and allowing for monitoring and recording activity around the bike parking area. </p>
+                </div>
+                <div class="level level-left">
+                    <img src="~/images/44.svg" alt="Level 4">
+                    <span>Level 4: </span><p>These are high-security bike parking facilities where access is controlled by electronic card readers or keypads. Only authorized users such as residents, employees, or registered members can park their bikes in these facilities</p>
+                </div>
+                <div class="level level-right">
+                    <img src="~/images/55.svg" alt="Level 5">
+                    <span>Level 5: </span><p>This level of bike security involves controlled access systems, like card readers, paired with active security monitoring. This might involve security personnel or advanced surveillance systems. This level provides high-security bike parking and is suitable for valuable bikes and long-term parking in commercial and residential buildings.</p>
+                </div>
             </div>
         </div>
-     </section>    
+
+
+
+
+
+    </section>    
 </body>
 </html>
 
@@ -251,39 +325,42 @@
 @section Scripts {
         <script>
 
+        const filterBtn = document.querySelector('.filter-btn');
+        const filterForm = document.querySelector('#filter-form');
+        filterBtn.addEventListener('click', () => {
+            filterForm.classList.toggle('show');
+        });
+        var loginModal = document.getElementById("login-modal");
+        var loginBtn = document.getElementById("login-btn");
+        loginBtn.onclick = function () {
+            loginModal.style.display = "block";
+        };
+        window.addEventListener('click', function (event) {
+            if (event.target == loginModal) {
+                loginModal.style.display = "none";
+            }
+        });
 
-            // Get the filter button and filter form
-            const filterBtn = document.querySelector('.filter-btn');
-            const filterForm = document.querySelector('#filter-form');
+        
+        var infoModal = document.getElementById("modal");
+        var infoBtn = document.getElementById("openModal");
+        var closeInfoModal = document.getElementById("closeModal");
+        infoBtn.onclick = function () {
+            infoModal.style.display = "block";
+        }
+        closeInfoModal.onclick = function () {
+            infoModal.style.display = "none";
+        }
+        window.addEventListener('click', function (event) {
+            if (event.target == infoModal) {
+                infoModal.style.display = "none";
+            }
+        });
 
-            // Toggle the display of the filter form when the filter button is clicked
-            filterBtn.addEventListener('click', () => {
-                filterForm.classList.toggle('show');
-            });
 
 
 
 
-            // Get the modal
-            var modal = document.getElementById("login-modal");
-
-            // Get the button that opens the modal
-            var btn = document.getElementById("login-btn");
-
-            // When the user clicks the button, open the modal
-            btn.onclick = function () {
-                modal.style.display = "block";
-            };
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            };
-
-            </script>
-        <script>
             var map;
             var currentLocationMarker;
             let markers = [];
@@ -295,20 +372,20 @@
                     center: { lat: 46.770439, lng: 23.591423 },
                     zoom: 12,
                     mapId: 'fd46ebf30d389dd2',
-                    disableDefaultUI: true, // Disable default UI controls
-                    mapTypeControl: false, // Remove map type control (e.g., satellite mode)
-                    streetViewControl: false, // Remove street view control
-                    fullscreenControl: true, // Remove fullscreen control
-                    zoomControl: true // Enable zoom control
+                    disableDefaultUI: true, 
+                    mapTypeControl: false, 
+                    streetViewControl: false, 
+                    fullscreenControl: true, 
+                    zoomControl: true 
                 });
 
                 directionsService = new google.maps.DirectionsService();
                 directionsRenderer = new google.maps.DirectionsRenderer({
                     suppressMarkers: true,
                     polylineOptions: {
-                    strokeColor: '#F2CA50', // Main color of the route line
-                    strokeOpacity: 0.8, // Opacity of the route line (0.0 - 1.0)
-                    strokeWeight: 6, // Thickness of the route line
+                    strokeColor: '#F2CA50', 
+                    strokeOpacity: 0.8, 
+                    strokeWeight: 6, 
                     icons: [
                     {
                         icon: {
@@ -341,42 +418,42 @@
                     alert("Geolocation is not supported by this browser.");
                 }
 
-        @foreach (var item in Model.BikeParking)
-        {
-            <text>
-                            (function () {
-                                const position = { lat: @item.Latitude, lng: @item.Longitude };
+                @foreach (var item in Model.BikeParking)
+                {
+                    <text>
+                                    (function () {
+                                        const position = { lat: @item.Latitude, lng: @item.Longitude };
 
-                                const marker = new google.maps.Marker({
-                                    position,
-                                    map,
-                                    title: '@item.Name',
-                                    icon: {
-                                        url: "/icons/pin2.png", 
-                                        scaledSize: new google.maps.Size(32, 32) 
-                                },
-                                });
+                                        const marker = new google.maps.Marker({
+                                            position,
+                                            map,
+                                            title: '@item.Name',
+                                            icon: {
+                                                url: "/icons/pin2.png", 
+                                                scaledSize: new google.maps.Size(32, 32) 
+                                        },
+                                        });
 
-                                const infowindow = new google.maps.InfoWindow({
-                                    content: `
-                                                        <div>
-                                                            <h3>@item.Name</h3>
-                                                            <p>Capacity: @item.Capacity</p>
-                                                            <p>Security Level: @item.SecurityLevel</p>
-                                                        </div>
-                                                    `,
-                                });
+                                        const infowindow = new google.maps.InfoWindow({
+                                            content: `
+                                                                <div>
+                                                                    <h3>@item.Name</h3>
+                                                                    <p>Capacity: @item.Capacity</p>
+                                                                    <p>Security Level: @item.SecurityLevel</p>
+                                                                </div>
+                                                            `,
+                                        });
 
-                                marker.addListener("click", () => {
-                                    infowindow.open(map, marker);
-                                    calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocationMarker.getPosition(), marker.getPosition());
-                                });
+                                        marker.addListener("click", () => {
+                                            infowindow.open(map, marker);
+                                            calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocationMarker.getPosition(), marker.getPosition());
+                                        });
 
-                                markers.push(marker);
-                            })();
-            </text>
-        }
-  }
+                                        markers.push(marker);
+                                    })();
+                    </text>
+                }
+          }
 
 
             function showPosition(position) {
@@ -388,7 +465,7 @@
                     map: map,
                     icon: {
                         url: "/Icons/bike.png",
-                        scaledSize: new google.maps.Size(32, 32) // specify the size of the icon
+                        scaledSize: new google.maps.Size(32, 32) 
                     },
                     title: "Your Current Location"
                 });
@@ -398,7 +475,7 @@
             }
 
     function calculateAndDisplayRoute(directionsService, directionsRenderer, origin, destination) {
-        // First, try the BICYCLING travel mode
+        //BICYCLING travel mode
         directionsService.route(
             {
                 origin: origin,
@@ -409,7 +486,7 @@
                 if (status === google.maps.DirectionsStatus.OK) {
                     directionsRenderer.setDirections(response);
                 } else {
-                    // If BICYCLING is not available, fall back to WALKING
+                    //BICYCLING not available,change to WALKING
                     directionsService.route(
                         {
                             origin: origin,

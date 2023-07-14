@@ -5,13 +5,21 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Location</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Location</title>
+    <link rel="stylesheet" href="~/css/crudStyle.css">
+</head>
+<body>
+    <h1>Edit Location</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Location.ID" />
 
@@ -79,16 +87,18 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <div id="map" style="height: 400px;"></div>
+        </div>
     </div>
-     <div class="col-md-8">
-        <div id="map" style="height: 400px;"></div>
+
+    <div>
+        <a asp-page="Index" class="btn btn-primary">Back to List</a>
     </div>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
-
+</body>
+</html>
 @section Scripts {
 
     <script>
@@ -97,6 +107,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: @Model.Location.Latitude, lng: @Model.Location.Longitude },
         zoom: 12,
+         mapId: 'fd46ebf30d389dd2'
     });
     var marker = new google.maps.Marker({
         position: { lat: @Model.Location.Latitude, lng: @Model.Location.Longitude },
@@ -112,6 +123,11 @@ function initMap() {
 }
 
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzHZqkegdjz_xvNtEuYReEdgrPi1PFmbk&callback=initMap&v=weekly" async defer></script>
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+ <script src="~/GoogleMapsApiProxy" async defer></script>
+ @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+
+
+

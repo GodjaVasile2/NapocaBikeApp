@@ -56,7 +56,7 @@
             margin-left: auto;
             padding-left: 30px;
         }
-        /* Login Modal */
+       
         .login-btn {
             cursor: pointer;
         }
@@ -138,6 +138,12 @@
             display: inline-block;
         }
 
+        #map {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.1);
+        }
+
     </style>
 </head>
 
@@ -152,7 +158,14 @@
                 <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
                 <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
                 <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
-                <a asp-area="" asp-page="/Propose" class="menu-item">Propose</a>
+                <div class="menu-item dropdown">
+                    <a href="#" class="dropdown-toggle">Propose</a>
+                    <div class="dropdown-menu">
+                        <a asp-area="" asp-page="/Propose" class="menu-item">Parking</a>
+                        <a asp-area="" asp-page="/ProposeLocation" class="menu-item">Location</a>
+
+                    </div>
+                </div>
                 @if (Model.IsAdmin)
                 {
                     <div class="menu-item dropdown">
@@ -196,7 +209,7 @@
             </div>
         </div>
 
-         <div id="map" style="height:600px;"></div>
+        <div id="map" style="height:600px; margin-top:20px;"></div>
            
       
     </section>
@@ -207,25 +220,19 @@
 
 @section Scripts {
     <script>
-        // Get the modal
+        
         var modal = document.getElementById("login-modal");
-
-        // Get the button that opens the modal
         var btn = document.getElementById("login-btn");
-
-        // When the user clicks the button, open the modal
         btn.onclick = function () {
             modal.style.display = "block";
         };
-
-        // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
         };
-    </script>
-    <script>
+   
+  
         async function geocodeAddress(address) {
             const geocoder = new google.maps.Geocoder();
             return new Promise((resolve, reject) => {
@@ -253,19 +260,18 @@
                 center: { lat: 46.770439, lng: 23.591423 },
                 zoom: 13,
                 mapId: 'fd46ebf30d389dd2',
-                disableDefaultUI: true, // Disable default UI controls
-                mapTypeControl: false, // Remove map type control (e.g., satellite mode)
-                streetViewControl: false, // Remove street view control
-                fullscreenControl: true, // Remove fullscreen control
-                zoomControl: true // Enable zoom control
-            });
+                disableDefaultUI: true, 
+                mapTypeControl: false, 
+                streetViewControl: false, 
+                fullscreenControl: true, 
+                zoomControl: true 
             directionsService = new google.maps.DirectionsService();
             directionsRenderer = new google.maps.DirectionsRenderer({
                 suppressMarkers: true,
                 polylineOptions: {
-                    strokeColor: '#F2CA50', // Main color of the route line
-                    strokeOpacity: 0.8, // Opacity of the route line (0.0 - 1.0)
-                    strokeWeight: 6, // Thickness of the route line
+                    strokeColor: '#F2CA50', 
+                    strokeOpacity: 0.8, 
+                    strokeWeight: 6, 
                     icons: [
                         {
                             icon: {

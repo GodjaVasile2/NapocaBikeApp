@@ -64,23 +64,23 @@ namespace NapocaBike.Pages.Locations
                 return NotFound();
             }
 
-            // Preia noile coordonate din formular și le salvează în model
+            
             locationToUpdate.Latitude = Convert.ToDouble(Request.Form["Latitude"]);
             locationToUpdate.Longitude = Convert.ToDouble(Request.Form["Longitude"]);
 
-            // Actualizează restul câmpurilor modelului
+            
             if (await TryUpdateModelAsync<Location>(
                 locationToUpdate,
                 "Location",
-                i => i.Name, i => i.Adress, i => i.Latitude, i => i.Longitude,
-                i => i.Program))
+                 i => i.Name, i => i.Adress, i => i.Latitude, i => i.Longitude,
+                 i => i.Program, i => i.Phone, i => i.Email, i => i.Website))
             {
                 UpdateLocationCategories(_context, selectedCategories, locationToUpdate);
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
 
-            // Actualizează categoriile și afișează pagina cu erorile
+            
             UpdateLocationCategories(_context, selectedCategories, locationToUpdate);
             PopulateAssignedCategoryData(_context, locationToUpdate);
             return Page();

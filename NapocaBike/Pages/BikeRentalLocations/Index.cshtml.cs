@@ -24,7 +24,7 @@ namespace NapocaBike.Pages.BikeRentalLocations
         }
         public Member CurrentMember { get; set; }
         public IList<BikeRentalLocation> BikeRentalLocation { get; set; } = default!;
-        public IList<Location> Locations { get; set; } = default!; // Add this line
+        
 
         public async Task OnGetAsync()
         {
@@ -39,15 +39,13 @@ namespace NapocaBike.Pages.BikeRentalLocations
             {
                 BikeRentalLocation = await _context.BikeRentalLocation.ToListAsync();
             }
-            if (_context.Location != null) // Add this block
-            {
-                Locations = await _context.Location.ToListAsync();
-            }
+           
             await LoadUserDataAsync();
         }
 
         public async Task FetchAndSaveData()
         {
+            // Creating the HttpClient with decompression methods.
             var handler = new HttpClientHandler
             {
                 AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
@@ -58,7 +56,6 @@ namespace NapocaBike.Pages.BikeRentalLocations
             var projectId = "t575N9MFXRz8";
             var url = $"https://parsehub.com/api/v2/projects/{projectId}/last_ready_run/data?api_key={apiKey}&format=json";
 
-
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
@@ -66,12 +63,26 @@ namespace NapocaBike.Pages.BikeRentalLocations
             var parseHubResponse = JsonConvert.DeserializeObject<ParseHubResponse>(responseBody);
             var bikeRentalLocations = parseHubResponse.SelecPin;
 
+           
+            _context.BikeRentalLocation.RemoveRange(_context.BikeRentalLocation);
+            await _context.SaveChangesAsync();
+
+          
             foreach (var bikeRentalLocation in bikeRentalLocations)
             {
+                int startIndex = bikeRentalLocation.Adress.IndexOf("(");
+                int endIndex = bikeRentalLocation.Adress.LastIndexOf(")");
+
+                if (startIndex != -1 && endIndex != -1)
+                {
+                    bikeRentalLocation.Adress = bikeRentalLocation.Adress.Remove(endIndex, 1).Remove(startIndex, 1).Trim();
+                }
+
                 _context.BikeRentalLocation.Add(bikeRentalLocation);
             }
 
             await _context.SaveChangesAsync();
         }
+
     }
 }

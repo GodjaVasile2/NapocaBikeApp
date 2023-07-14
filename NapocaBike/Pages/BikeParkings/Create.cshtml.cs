@@ -29,7 +29,7 @@ namespace NapocaBike.Pages.BikeParkings
         public BikeParking BikeParking { get; set; }
 
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+       
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

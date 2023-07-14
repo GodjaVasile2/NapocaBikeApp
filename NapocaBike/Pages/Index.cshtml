@@ -53,6 +53,7 @@
             margin-left: auto;
             padding-left: 30px;
         }
+
         /* Login Modal */
         .login-btn {
             cursor: pointer;
@@ -75,8 +76,8 @@
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 50%; /* Adjust this value to make the modal width smaller */
-            max-width: 400px; /* Set a maximum width for the modal */
+            width: 50%; 
+            max-width: 400px; 
         }
         
    </style>
@@ -88,6 +89,7 @@
         <input type="checkbox" id="check">
         <header>
             <h2><a href="#" class="logo"> Napoca Bike </a></h2>
+
 
             <div class="navigation">
                 <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
@@ -159,25 +161,25 @@
             </div>
         </div>
         <div class="media-icons">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
         </div>
     </section>
 
     <script>
-        // Get the modal
+        
         var modal = document.getElementById("login-modal");
 
-        // Get the button that opens the modal
+       
         var btn = document.getElementById("login-btn");
 
-        // When the user clicks the button, open the modal
+    
         btn.onclick = function () {
             modal.style.display = "block";
         };
 
-        // When the user clicks anywhere outside of the modal, close it
+        
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";

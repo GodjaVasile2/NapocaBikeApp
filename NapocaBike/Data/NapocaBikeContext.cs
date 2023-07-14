@@ -14,7 +14,6 @@ namespace NapocaBike.Data
         {
         }
        
-
         public DbSet<NapocaBike.Models.Member> Member { get; set; } = default!;
        
         public DbSet<NapocaBike.Models.Location>? Location { get; set; }
@@ -23,14 +22,15 @@ namespace NapocaBike.Data
         public DbSet<NapocaBike.Models.Category>? Category { get; set; }
     
 
-        //public DbSet<NapocaBike.Models.BikeRental>? BikeRental { get; set; }
-       
-
         public DbSet<NapocaBike.Models.BikeParking>? BikeParking { get; set; }
        
 
         public DbSet<BikeRentalLocation>? BikeRentalLocation { get; set; }
-        public DbSet<NapocaBike.Models.ProposedBikeParking>? ProposedBikeParkings { get; set; }
+
+        public DbSet<ProposedBikeParking> ProposedBikeParkings { get; set; }
+
+
+        
 
 
     }

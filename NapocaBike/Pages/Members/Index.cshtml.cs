@@ -28,5 +28,6 @@ namespace NapocaBike.Pages.Members
                 Member = await _context.Member.ToListAsync();
             }
         }
+
     }
 }

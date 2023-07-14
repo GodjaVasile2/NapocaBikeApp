@@ -53,7 +53,7 @@
             margin-left: auto;
             padding-left: 30px;
         }
-        /* Login Modal */
+       
         .login-btn {
             cursor: pointer;
         }
@@ -109,6 +109,7 @@
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 999;
             transition: all 0.3s ease-in-out;
+            
         }
 
             #filter-form.show {
@@ -150,6 +151,18 @@
             flex: 1;
         }
 
+        #map {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.1);
+        }
+
+        #directions-panel {
+            display: none;
+            /* Additional styles for the panel */
+        }
+
+
     </style>
 </head>
 
@@ -164,7 +177,14 @@
                 <a asp-area="" asp-page="/LocationsList" class="menu-item">Locations</a>
                 <a asp-area="" asp-page="/BikeParkingsList" class="menu-item">Parkings</a>
                 <a asp-area="" asp-page="/RentalsList" class="menu-item">Rentals</a>
-                <a asp-area="" asp-page="/Propose" class="menu-item">Propose</a>
+                <div class="menu-item dropdown">
+                    <a href="#" class="dropdown-toggle">Propose</a>
+                    <div class="dropdown-menu">
+                        <a asp-area="" asp-page="/Propose" class="menu-item">Parking</a>
+                        <a asp-area="" asp-page="/ProposeLocation" class="menu-item">Location</a>
+
+                    </div>
+                </div>
                 @if (Model.IsAdmin)
                 {
                     <div class="menu-item dropdown">
@@ -210,8 +230,11 @@
         </div>
 
         <div style="position: relative;">
+            <div id="directions-panel" style="background-color: white; padding: 20px; overflow: auto; height: 300px; width: 300px; position: absolute; bottom: 10px; left: 10px; z-index: 999;"></div>
             <div id="map" style="height:600px;"></div>
-            <button class="filter-btn" style="position: absolute; bottom: 10px; left: 10px;"><i class="fas fa-filter"></i></button>
+
+
+            <button class="filter-btn" style="position: absolute; top: 10px; left: 10px;"><i class="fas fa-filter"></i></button>
             <div id="filter-form">
                 <form method="get">
                     <div class="form-group">
@@ -227,20 +250,14 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary" asp-page-handler="filter">Filter</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: #C28E1E; " asp-page-handler="filter">Filter</button>
                         <a asp-page="/LocationsList class="btn btn-secondary ml-2">Clear</a>
                     </div>
                 </form>
             </div>
+
         </div>
-        <div id="directions-panel" style="background-color: white; padding: 20px; overflow: auto; height: 300px; width: 300px;"></div>
-
-
        
-
-              
-            
-      
     </section>
 
 
@@ -255,27 +272,22 @@
     <script>
 
 
-        // Get the filter button and filter form
+
         const filterBtn = document.querySelector('.filter-btn');
         const filterForm = document.querySelector('#filter-form');
 
-        // Toggle the display of the filter form when the filter button is clicked
         filterBtn.addEventListener('click', () => {
             filterForm.classList.toggle('show');
         });
-
-        // Get the modal
         var modal = document.getElementById("login-modal");
 
-        // Get the button that opens the modal
+ 
         var btn = document.getElementById("login-btn");
 
-        // When the user clicks the button, open the modal
         btn.onclick = function () {
             modal.style.display = "block";
         };
 
-        // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
@@ -296,7 +308,7 @@
                 mapId: 'fd46ebf30d389dd2',
                 disableDefaultUI: false, // Disable default UI controls
                 mapTypeControl: false, // Remove map type control (e.g., satellite mode)
-                streetViewControl: false, // Remove street view control
+                streetViewControl: true, // Remove street view control
                 fullscreenControl: true, // Remove fullscreen control
                 zoomControl: true // Enable zoom control
             });
@@ -369,7 +381,8 @@
                             }
                             concatenatedCategories = concatenatedCategories.Trim().TrimEnd(',');
                         }@concatenatedCategories</p>
-                                                                        </div>
+           
+                                                                                    </div>
                                                                     `,
                         });
 
@@ -447,7 +460,10 @@
                 directionsPanel.innerHTML += `<p>Duration: ${step.duration.text}</p>`;
                 directionsPanel.innerHTML += '<hr>';
             });
+
+            directionsPanel.style.display = "block"; // This will make the panel visible
         }
+
 
     </script>
 
