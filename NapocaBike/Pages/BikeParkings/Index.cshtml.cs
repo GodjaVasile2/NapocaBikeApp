@@ -42,7 +42,7 @@ namespace NapocaBike.Pages.BikeParkings
 
             BikeParking = await _context.BikeParking.ToListAsync();
 
-            // Now apply your filters
+            
             if (CapacityFilter > 0 && SecurityFilter > 0)
             {
                 BikeParking = BikeParking.Where(bp => bp.Capacity >= CapacityFilter && bp.SecurityLevel >= SecurityFilter).ToList();

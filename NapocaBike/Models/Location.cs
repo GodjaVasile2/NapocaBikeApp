@@ -34,6 +34,7 @@ namespace NapocaBike.Models
         public bool IsApproved { get; set; }
 
         public ICollection<LocationCategory>? LocationCategories { get; set; }
-        public ICollection<Review> Reviews { get; set; }
+
+     
     }
 }

@@ -55,6 +55,7 @@
             margin-left: auto;
             padding-left: 30px;
         }
+
         /* Login Modal */
         .login-btn {
             cursor: pointer;
@@ -74,7 +75,7 @@
 
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto;
+            margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
@@ -142,7 +143,7 @@
 
         .button {
             padding: 10px 20px;
-            background-color: #C28E1E; /* same as other buttons on the page */
+            background-color: #C28E1E; 
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -157,21 +158,21 @@
             }
 
         .modal-content {
-            background-color: #f9f9f9; /* light grey */
-            border: 1px solid #C28E1E; /* gold */
+            background-color: #f9f9f9; 
+            border: 1px solid #C28E1E; 
             border-radius: 10px;
         }
 
             .modal-content h2 {
-                color: #C28E1E; /* gold */
+                color: #C28E1E; 
             }
 
             .modal-content p {
-                color: #333; /* dark grey */
+                color: #333; 
             }
 
         #closeModal {
-            color: #C28E1E; /* gold */
+            color: #C28E1E; 
         }
 
             #closeModal:hover,
@@ -181,13 +182,13 @@
             }
 
         .level img {
-            border: 1px solid #C28E1E; /* gold */
+            border: 1px solid #C28E1E; 
             border-radius: 5px;
         }
 
         .level span {
             font-weight: bold;
-            color: #333; /* dark grey */
+            color: #333; 
             margin-right: 10px;
         }
 
@@ -324,48 +325,39 @@
 @section Scripts {
         <script>
 
-            const filterBtn = document.querySelector('.filter-btn');
-            const filterForm = document.querySelector('#filter-form');
-            filterBtn.addEventListener('click', () => {
-                filterForm.classList.toggle('show');
-            });
-            var modal = document.getElementById("login-modal");
-            var btn = document.getElementById("login-btn");
-
-            btn.onclick = function () {
-                modal.style.display = "block";
-            };
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            };
-
-        // Get the modal
-        var modal = document.getElementById("modal");
-
-        // Get the button that opens the modal
-        var btn = document.getElementById("openModal");
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementById("closeModal");
-
-        // When the user clicks the button, open the modal
-        btn.onclick = function () {
-            modal.style.display = "block";
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-            modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
+        const filterBtn = document.querySelector('.filter-btn');
+        const filterForm = document.querySelector('#filter-form');
+        filterBtn.addEventListener('click', () => {
+            filterForm.classList.toggle('show');
+        });
+        var loginModal = document.getElementById("login-modal");
+        var loginBtn = document.getElementById("login-btn");
+        loginBtn.onclick = function () {
+            loginModal.style.display = "block";
+        };
+        window.addEventListener('click', function (event) {
+            if (event.target == loginModal) {
+                loginModal.style.display = "none";
             }
+        });
+
+        
+        var infoModal = document.getElementById("modal");
+        var infoBtn = document.getElementById("openModal");
+        var closeInfoModal = document.getElementById("closeModal");
+        infoBtn.onclick = function () {
+            infoModal.style.display = "block";
         }
+        closeInfoModal.onclick = function () {
+            infoModal.style.display = "none";
+        }
+        window.addEventListener('click', function (event) {
+            if (event.target == infoModal) {
+                infoModal.style.display = "none";
+            }
+        });
+
+
 
 
 
@@ -380,20 +372,20 @@
                     center: { lat: 46.770439, lng: 23.591423 },
                     zoom: 12,
                     mapId: 'fd46ebf30d389dd2',
-                    disableDefaultUI: true, // Disable default UI controls
-                    mapTypeControl: false, // Remove map type control (e.g., satellite mode)
-                    streetViewControl: false, // Remove street view control
-                    fullscreenControl: true, // Remove fullscreen control
-                    zoomControl: true // Enable zoom control
+                    disableDefaultUI: true, 
+                    mapTypeControl: false, 
+                    streetViewControl: false, 
+                    fullscreenControl: true, 
+                    zoomControl: true 
                 });
 
                 directionsService = new google.maps.DirectionsService();
                 directionsRenderer = new google.maps.DirectionsRenderer({
                     suppressMarkers: true,
                     polylineOptions: {
-                    strokeColor: '#F2CA50', // Main color of the route line
-                    strokeOpacity: 0.8, // Opacity of the route line (0.0 - 1.0)
-                    strokeWeight: 6, // Thickness of the route line
+                    strokeColor: '#F2CA50', 
+                    strokeOpacity: 0.8, 
+                    strokeWeight: 6, 
                     icons: [
                     {
                         icon: {
@@ -426,42 +418,42 @@
                     alert("Geolocation is not supported by this browser.");
                 }
 
-        @foreach (var item in Model.BikeParking)
-        {
-            <text>
-                            (function () {
-                                const position = { lat: @item.Latitude, lng: @item.Longitude };
+                @foreach (var item in Model.BikeParking)
+                {
+                    <text>
+                                    (function () {
+                                        const position = { lat: @item.Latitude, lng: @item.Longitude };
 
-                                const marker = new google.maps.Marker({
-                                    position,
-                                    map,
-                                    title: '@item.Name',
-                                    icon: {
-                                        url: "/icons/pin2.png", 
-                                        scaledSize: new google.maps.Size(32, 32) 
-                                },
-                                });
+                                        const marker = new google.maps.Marker({
+                                            position,
+                                            map,
+                                            title: '@item.Name',
+                                            icon: {
+                                                url: "/icons/pin2.png", 
+                                                scaledSize: new google.maps.Size(32, 32) 
+                                        },
+                                        });
 
-                                const infowindow = new google.maps.InfoWindow({
-                                    content: `
-                                                        <div>
-                                                            <h3>@item.Name</h3>
-                                                            <p>Capacity: @item.Capacity</p>
-                                                            <p>Security Level: @item.SecurityLevel</p>
-                                                        </div>
-                                                    `,
-                                });
+                                        const infowindow = new google.maps.InfoWindow({
+                                            content: `
+                                                                <div>
+                                                                    <h3>@item.Name</h3>
+                                                                    <p>Capacity: @item.Capacity</p>
+                                                                    <p>Security Level: @item.SecurityLevel</p>
+                                                                </div>
+                                                            `,
+                                        });
 
-                                marker.addListener("click", () => {
-                                    infowindow.open(map, marker);
-                                    calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocationMarker.getPosition(), marker.getPosition());
-                                });
+                                        marker.addListener("click", () => {
+                                            infowindow.open(map, marker);
+                                            calculateAndDisplayRoute(directionsService, directionsRenderer, currentLocationMarker.getPosition(), marker.getPosition());
+                                        });
 
-                                markers.push(marker);
-                            })();
-            </text>
-        }
-  }
+                                        markers.push(marker);
+                                    })();
+                    </text>
+                }
+          }
 
 
             function showPosition(position) {
@@ -473,7 +465,7 @@
                     map: map,
                     icon: {
                         url: "/Icons/bike.png",
-                        scaledSize: new google.maps.Size(32, 32) // specify the size of the icon
+                        scaledSize: new google.maps.Size(32, 32) 
                     },
                     title: "Your Current Location"
                 });
@@ -483,7 +475,7 @@
             }
 
     function calculateAndDisplayRoute(directionsService, directionsRenderer, origin, destination) {
-        // First, try the BICYCLING travel mode
+        //BICYCLING travel mode
         directionsService.route(
             {
                 origin: origin,
@@ -494,7 +486,7 @@
                 if (status === google.maps.DirectionsStatus.OK) {
                     directionsRenderer.setDirections(response);
                 } else {
-                    // If BICYCLING is not available, fall back to WALKING
+                    //BICYCLING not available,change to WALKING
                     directionsService.route(
                         {
                             origin: origin,

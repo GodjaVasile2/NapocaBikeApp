@@ -45,6 +45,7 @@ namespace NapocaBike.Pages.BikeRentalLocations
 
         public async Task FetchAndSaveData()
         {
+            // Creating the HttpClient with decompression methods.
             var handler = new HttpClientHandler
             {
                 AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
@@ -55,7 +56,6 @@ namespace NapocaBike.Pages.BikeRentalLocations
             var projectId = "t575N9MFXRz8";
             var url = $"https://parsehub.com/api/v2/projects/{projectId}/last_ready_run/data?api_key={apiKey}&format=json";
 
-
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
@@ -63,9 +63,13 @@ namespace NapocaBike.Pages.BikeRentalLocations
             var parseHubResponse = JsonConvert.DeserializeObject<ParseHubResponse>(responseBody);
             var bikeRentalLocations = parseHubResponse.SelecPin;
 
+           
+            _context.BikeRentalLocation.RemoveRange(_context.BikeRentalLocation);
+            await _context.SaveChangesAsync();
+
+          
             foreach (var bikeRentalLocation in bikeRentalLocations)
             {
-                
                 int startIndex = bikeRentalLocation.Adress.IndexOf("(");
                 int endIndex = bikeRentalLocation.Adress.LastIndexOf(")");
 
@@ -74,13 +78,11 @@ namespace NapocaBike.Pages.BikeRentalLocations
                     bikeRentalLocation.Adress = bikeRentalLocation.Adress.Remove(endIndex, 1).Remove(startIndex, 1).Trim();
                 }
 
-                if (!_context.BikeRentalLocation.Any(x => x.Name == bikeRentalLocation.Name && x.Adress == bikeRentalLocation.Adress))
-                {
-                    _context.BikeRentalLocation.Add(bikeRentalLocation);
-                }
+                _context.BikeRentalLocation.Add(bikeRentalLocation);
             }
-            await _context.SaveChangesAsync();
 
+            await _context.SaveChangesAsync();
         }
+
     }
 }
