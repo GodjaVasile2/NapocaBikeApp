@@ -1,24 +1,37 @@
 # NapocaBike
 
-NapocaBike is a project developed as part of my undergraduate degree. It's focused on assisting cyclists in Cluj-Napoca to find essential locations like parking areas, shops, and bike rentals. This project marked my first experience with the .NET framework, specifically ASP.NET Core, and it integrates GPS tracking, multiple Google APIs, and interactive maps.
+Short description of your project, what it does, and the technologies used.
 
-## Technologies Used
+## Description
 
-- [ASP.NET Core](https://dotnet.microsoft.com/apps/aspnet): The web framework used for building the application.
-- [Google APIs](https://developers.google.com/maps/documentation): Used for map integration and location services.
-- [GPS Tracking](https://developer.android.com/guide/topics/location): Used for real-time location tracking of the users.
+A more detailed description of your project. Go into detail about the components of your project, how they interact, and any unique challenges you faced.
 
-## Getting Started
+## Why?
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+Explain the motivation behind this project. Why did you decide to create it? What problem does it solve? What was your main goal?
 
-### Prerequisites
+## Quick Start
 
-- .NET Core SDK
-- A suitable IDE such as Visual Studio Code
+Instructions for how to get your project up and running. This could include:
 
-### Installation
+1. Prerequisites for the project
+2. Step-by-step instructions to install the project
+3. Any necessary environment variables or credentials
 
-1. Clone the repository
-```sh
-git clone https://github.com/yourusername/NapocaBike.git
+## Usage
+
+Instructions for how to use your project. This could include:
+
+1. Code examples
+2. Screenshots
+3. Explanation of any user inputs or outputs
+
+## Contributing
+
+Details about how others can contribute to your project. This could include:
+
+1. Instructions for submitting pull requests
+2. A link to your code of conduct
+3. Any specific coding standards or practices contributors should follow
+
+Remember, the goal of a README is to help others understand and use your project, so make sure it's clear and detailed!
