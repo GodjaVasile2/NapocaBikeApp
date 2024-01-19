@@ -1,37 +1,33 @@
-# NapocaBike
+# Napoca Bike
 
-Short description of your project, what it does, and the technologies used.
+Napoca Bike is a web application designed to encourage users to adopt two-wheeled transportation and explore the beautiful city of Cluj-Napoca.
 
-## Description
-
-A more detailed description of your project. Go into detail about the components of your project, how they interact, and any unique challenges you faced.
 
 ## Why?
 
-Explain the motivation behind this project. Why did you decide to create it? What problem does it solve? What was your main goal?
+This web application was developed as my license project, born out of my passion for cycling and my desire to solve a personal challenge.
+As an avid cyclist in Cluj-Napoca, I often found myself reluctant to use my bicycle due to the difficulty in finding suitable and secure parking spots. 
+Napoca Bike is my solution to this problem
 
-## Quick Start
-
-Instructions for how to get your project up and running. This could include:
-
-1. Prerequisites for the project
-2. Step-by-step instructions to install the project
-3. Any necessary environment variables or credentials
 
 ## Usage
 
-Instructions for how to use your project. This could include:
+The website is composed of several pages, each addressing a specific need:
 
-1. Code examples
-2. Screenshots
-3. Explanation of any user inputs or outputs
+Locations Page 📍: This page is dedicated to Shops and Services for bicycles, providing a comprehensive list of places where users can purchase or repair their bikes.
 
-## Contributing
+Parkings Page 🅿️: The main feature of the website, this page allows users to find the nearest bicycle parking spots. It also provides details about each parking spot, such as its capacity and safety level.
 
-Details about how others can contribute to your project. This could include:
+Rentals Page 🚲: This page is specifically for those who wish to rent bicycles through the program provided by the municipality of Cluj-Napoca.
 
-1. Instructions for submitting pull requests
-2. A link to your code of conduct
-3. Any specific coding standards or practices contributors should follow
+Users are also invited to suggest their own parking spots or locations where bikes can be purchased or repaired. This feature encourages community involvement and ensures the information on the site is up-to-date and relevant. 💡
 
-Remember, the goal of a README is to help others understand and use your project, so make sure it's clear and detailed!
+
+## 🛠️ Technologies Used
+
+- **C#**
+- **ASP.NET Razor Pages**
+- **Entity Framework Core**
+- **JavaScript**
+- **Google Maps Platform API**
+- **ParseHub API**
