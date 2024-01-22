@@ -22,6 +22,12 @@ Rentals Page 🚲: This page is specifically for those who wish to rent bicycles
 
 Users are also invited to suggest their own parking spots or locations where bikes can be purchased or repaired. This feature encourages community involvement and ensures the information on the site is up-to-date and relevant. 💡
 
+## 🎥 Demo
+
+Here is a short demo of the project. Click the image below to play the video.
+
+[![Demo Video](http://img.youtube.com/vi/VIDEO_ID/0.jpg)](http://www.youtube.com/watch?v=VIDEO_ID "Demo Video")
+
 
 ## 🛠️ Technologies Used
 
