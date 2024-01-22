@@ -26,7 +26,7 @@ Users are also invited to suggest their own parking spots or locations where bik
 
 Here is a short demo of the project. Click the image below to play the video.
 
-[![Demo Video](http://img.youtube.com/vi/VIDEO_ID/0.jpg)](http://www.youtube.com/watch?v=VIDEO_ID "Demo Video")
+https://github.com/GodjaVasile2/NapocaBike_WebApp/assets/131607138/67c5f5a7-fdda-40d4-958e-28b929ea6fd6
 
 
 ## 🛠️ Technologies Used
